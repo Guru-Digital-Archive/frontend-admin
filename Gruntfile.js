@@ -42,8 +42,8 @@ module.exports = function(grunt) {
 		uglify: {
 			my_target: {
 			files: {
-                                'javascript/dist/FrontEndAdmin.js': ['javascript/dist/FrontEndAdmin.min.js'],
-                                'javascript/dist/FrontEndEditorToolbar.js': ['javascript/dist/FrontEndEditorToolbar.min.js'],
+                                'javascript/dist/FrontEndAdmin.min.js': ['javascript/dist/FrontEndAdmin.js'],
+                                'javascript/dist/FrontEndEditorToolbar.min.js': ['javascript/dist/FrontEndEditorToolbar.js'],
                             }
                         },
 			options: {

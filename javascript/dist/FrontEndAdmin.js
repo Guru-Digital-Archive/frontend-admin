@@ -1,3 +1,11 @@
+/*
+ *  Silverstripe front end admin  - v0.1
+ *  Front end admin for Silverstripe
+ *  
+ *
+ *  Made by Corey Sewell
+ *  Under BSD License
+ */
 (function($) {
     $(function() {
         $.entwine("ss.frontEndAdmin", function($) {

@@ -25,10 +25,9 @@ class FrontendAdminControllerExtension extends Extension {
             Requirements::javascript('frontend-admin/thirdparty/tinymce/js/tinymce/tinymce.min.js');
             Requirements::javascript('frontend-admin/thirdparty/tinymce/js/tinymce/jquery.tinymce.min.js');
             Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/ssui.core.js');
-            Requirements::javascriptTemplate('frontend-admin/javascript/FrontEndAdminTemplate.js', $this->getConfig($page));
-            Requirements::javascript('frontend-admin/javascript/FrontEndAdmin.js');
+            Requirements::javascriptTemplate('frontend-admin/javascript/dist/FrontEndAdminTemplate.js', $this->getConfig($page));
+            Requirements::javascript('frontend-admin/javascript/dist/FrontEndAdmin.js');
             Requirements::css(FRAMEWORK_DIR . '/thirdparty/jquery-ui-themes/smoothness/jquery-ui.css');
-            Requirements::css('frontend-admin/css/frontend-admin.css');
             Requirements::css('frontend-admin/css/frontend-admin.css');
         }
     }
