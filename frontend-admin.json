@@ -1,0 +1,27 @@
+{
+    "name": "gdm-silverstripe-frontend-admin",
+    "title": "Silverstripe front end admin ",
+    "description": "Front end admin for Silverstripe",
+    "keywords": [
+    ],
+    "version": "0.1",
+    "author": {
+        "name": "Corey Sewell",
+        "email": "corey@gdmedia.tv"
+    },
+    "maintainers": [
+        {
+            "name": "Corey Sewell",
+            "email": "corey@gdmedia.tv"
+        }
+    ],
+    "dependencies": {
+        "jquery": ">=1.4"
+    },
+    "licenses": [
+        {
+            "type": "BSD",
+            "url": "http://www.silverstripe.org/bsd-license/"
+        }
+    ]
+}

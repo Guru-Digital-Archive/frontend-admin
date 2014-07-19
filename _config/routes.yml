@@ -1,0 +1,8 @@
+---
+Name: frontendeditingroutes
+After: 'framework/routes#coreroutes'
+---
+Director:
+  rules:
+    'FrontEndEditorToolbar': 'FrontEndEditorToolbar'
+---
