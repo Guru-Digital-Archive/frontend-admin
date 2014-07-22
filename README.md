@@ -23,6 +23,7 @@ A flyout menu containing the cms admin is also injected into the front end, so y
 <li>Enable editing for Varchar types</li>
 <li>Get media embed working</li>
 <li>Add to packigist to allow installing via Composer</li>
+<li>Enable/Disable edit mode. Currently if you are logged in, you are always in edit mode</li>
 </ul>
 <h2>Known Issues</h2>
 <ul>
@@ -30,6 +31,9 @@ A flyout menu containing the cms admin is also injected into the front end, so y
 </ul>
 
 <h2>Screenshots</h2>
-![Alt text](assets/screenshots/Silverstripe-Frontend-Admin.png?raw=true "Frontend admin open")
+####Admin closed, TinyMCE active
 ![Alt text](assets/screenshots/Silverstripe-Frontend-Editor-TinyMCE-4.png?raw=true "Frontend editor open")
+
+####Admin open
+![Alt text](assets/screenshots/Silverstripe-Frontend-Admin.png?raw=true "Frontend admin open")
 
