@@ -5,9 +5,8 @@
         <title></title>
         <% base_tag %>
     </head>
-    <body class="$CSSClasses">
-        $fromType MediaForm
-        <div class='cms ui-dialog' style="width: 100%; border: none !important; border-radius: 0;">
+    <body class="$CSSClasses" style="background: url(framework/admin/images/textures/bg_cms_main_content.png) #e6eaed;">
+        <div class='cms ui-dialog' style="width: 100%; border: none !important; border-radius: 0; position: relative">
             <div class='htmleditorfield-dialog htmleditorfield-mediadialog ui-dialog-content ui-widget-content'>
                 <% with $EditorToolbar %>
                 <% if $Up.fromType=="MediaForm" %>

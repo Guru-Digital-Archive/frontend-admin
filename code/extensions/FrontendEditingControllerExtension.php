@@ -3,7 +3,7 @@
 /**
  *
  */
-class FrontendAdminControllerExtension extends Extension {
+class FrontendEditingControllerExtension extends Extension {
 
     private static $allowed_actions = array(
         'fesave'
@@ -11,6 +11,7 @@ class FrontendAdminControllerExtension extends Extension {
 
     /**
      * add requirements for frontend editing only when logged in
+     * @todo Use TinyMCEs Compressor 4.0.2 PHP
      */
     public function onBeforeInit() {
         /* @var $controller Page_Controller */
@@ -21,14 +22,23 @@ class FrontendAdminControllerExtension extends Extension {
             Requirements::javascript(FRAMEWORK_DIR . '/thirdparty/jquery/jquery.js');
             Requirements::javascript(FRAMEWORK_DIR . '/thirdparty/jquery-ui/jquery-ui.js');
             Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
-            Requirements::javascript('frontend-admin/javascript/jquery.jeditable.js');
-            Requirements::javascript('frontend-admin/thirdparty/tinymce/js/tinymce/tinymce.min.js');
-            Requirements::javascript('frontend-admin/thirdparty/tinymce/js/tinymce/jquery.tinymce.min.js');
+            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/jquery.jeditable.js');
+            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/tinymce.min.js');
+            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/jquery.tinymce.min.js');
+
+            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce_ssfebuttons/tinymce_ssfebuttons.js');
+//                                          \frontend-admin\javascript\thirdparty\tinymce_ssfebuttons\tinymce_ssfebuttons.js
+
+
             Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/ssui.core.js');
-            Requirements::javascriptTemplate('frontend-admin/javascript/dist/FrontEndAdminTemplate.js', $this->getConfig($page));
-            Requirements::javascript('frontend-admin/javascript/dist/FrontEndAdmin.js');
+            Requirements::javascriptTemplate(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdminTemplate.js', $this->getConfig($page));
+            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdmin.js');
+            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditor.js');
             Requirements::css(FRAMEWORK_DIR . '/thirdparty/jquery-ui-themes/smoothness/jquery-ui.css');
-            Requirements::css('frontend-admin/css/frontend-admin.css');
+            Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-admin.css');
+            Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editing.css');
+            Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor.css');
+//frontend-editing
         }
     }
 
@@ -74,9 +84,10 @@ class FrontendAdminControllerExtension extends Extension {
                 $parent          = $parent->Parent();
             }
         }
+//        FrontEndEditorToolbar/LinkForm
         $jsConfig = [
-            'linkURL'       => Controller::join_links($baseHref, 'admin/pages/edit/EditorToolbar/LinkForm/forTemplate'),
-            'mediaURL'      => Controller::join_links($baseHref, 'admin/pages/edit/EditorToolbar/MediaForm/forTemplate'),
+            'linkURL'       => Controller::join_links(FrontEndEditorToolbar::create()->Link(), "LinkForm"),
+            'mediaURL'      => Controller::join_links(FrontEndEditorToolbar::create()->Link(), "MediaForm"),
             'themeDir'      => $themeDir,
             'baseDir'       => $baseDir,
             'baseHref'      => $baseHref,

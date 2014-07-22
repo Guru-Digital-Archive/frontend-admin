@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AACI,mBAAM;EACF,cAAc,EAAE,IAAI;EACpB,cAAc,EAAE,MAAM;;AAM1B,iDAAmB;EACf,UAAU,EAAE,uEAAuE",
+"sources": ["scss/frontend-editor.scss"],
+"names": [],
+"file": "frontend-editor.css"
+}

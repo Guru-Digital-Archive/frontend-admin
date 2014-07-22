@@ -1,7 +1,17 @@
+
 module.exports = function(grunt) {
+        grunt.loadNpmTasks('grunt-contrib-watch');
 
 	grunt.initConfig({
-
+                watch: {
+                  scripts: {
+                    files: ['javascript/src/*.js'],
+                    tasks: ['default'],
+                    options: {
+                      spawn: false,
+                    },
+                  },
+                },
 		// Import package manifest
 		pkg: grunt.file.readJSON("frontend-admin.json"),
 
@@ -22,6 +32,7 @@ module.exports = function(grunt) {
 			dist: {
                             files: {
                                 'javascript/dist/FrontEndAdmin.js': ['javascript/src/FrontEndAdmin.js'],
+                                'javascript/dist/FrontEndEditor.js': ['javascript/src/FrontEndEditor.js'],
                                 'javascript/dist/FrontEndEditorToolbar.js': ['javascript/src/FrontEndEditorToolbar.js'],
                             }
 			},
@@ -32,7 +43,11 @@ module.exports = function(grunt) {
 
 		// Lint definitions
 		jshint: {
-                        src: ["javascript/src/FrontEndAdmin.js","javascript/src/FrontEndEditorToolbar.js"],
+                        src: [
+                            "javascript/src/FrontEndAdmin.js",
+                            "javascript/src/FrontEndEditor.js",
+                            "javascript/src/FrontEndEditorToolbar.js"
+                        ],
 			options: {
 				jshintrc: ".jshintrc"
 			}
@@ -43,6 +58,7 @@ module.exports = function(grunt) {
 			my_target: {
 			files: {
                                 'javascript/dist/FrontEndAdmin.min.js': ['javascript/dist/FrontEndAdmin.js'],
+                                'javascript/dist/FrontEndEditor.min.js': ['javascript/dist/FrontEndEditor.js'],
                                 'javascript/dist/FrontEndEditorToolbar.min.js': ['javascript/dist/FrontEndEditorToolbar.js'],
                             }
                         },

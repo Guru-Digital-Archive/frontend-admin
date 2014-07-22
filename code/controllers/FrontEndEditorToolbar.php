@@ -81,14 +81,14 @@ class FrontEndEditorToolbar extends Controller {
             $leftAndMainIncludes[] = FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.Ping.js';
         }
 
-        $jsMin = (Director::isDev()) ? ".min" : "";
-        Requirements::javascript('frontend-admin/javascript/dist/FrontEndEditorToolbar' . $jsMin . '.js');
+        $jsMin = (Director::isDev()) ? "" : ".min";
+        Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditorToolbar' . $jsMin . '.js');
         Requirements::css(FRAMEWORK_ADMIN_DIR . '/thirdparty/chosen/chosen/chosen.css');
         Requirements::css(FRAMEWORK_DIR . '/thirdparty/jquery-ui-themes/smoothness/jquery-ui.css');
-        Requirements::css(FRAMEWORK_ADMIN_DIR . "/css/screen.css");
         Requirements::css(CMS_DIR . "/css/screen.css");
         Requirements::css(FRAMEWORK_DIR . '/css/AssetUploadField.css');
         Requirements::css(FRAMEWORK_DIR . '/css/UploadField.css');
+        Requirements::css(FRAMEWORK_ADMIN_DIR . "/css/screen.css");
     }
 
     public function MediaForm(SS_HTTPRequest $request) {
@@ -105,4 +105,12 @@ class FrontEndEditorToolbar extends Controller {
         return HtmlEditorField_Toolbar::create($this, "EditorToolbar");
     }
 
+//    public function Link($form = null) {
+//        if ($form) {
+//            $form = ucfirst($form) . "Form";
+//        } else {
+//            $form = $this->fromType;
+//        }
+//        return Controller::join_links(parent::Link(), $form);
+//    }
 }

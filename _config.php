@@ -1,7 +1,9 @@
 <?php
 
-//Object::useCustomClass('HTMLText', 'FrontendEditingHTMLText', true);
-//Object::useCustomClass('Varchar', 'FrontendEditingVarchar', true);
+define('FRONTEND_ADMIN_DIR', basename(dirname(__FILE__)));
 
-Object::add_extension('Page_Controller', 'FrontendAdminControllerExtension');
-Object::add_extension('Page', 'FrontendEditingPageExtension');
+Object::useCustomClass('HTMLText', 'FrontendEditorHTMLText', true);
+Object::useCustomClass('Varchar', 'FrontendEditorVarchar', true);
+
+Object::add_extension('Page_Controller', 'FrontendEditingControllerExtension');
+Object::add_extension('Page', 'FrontendAdminPageExtension');

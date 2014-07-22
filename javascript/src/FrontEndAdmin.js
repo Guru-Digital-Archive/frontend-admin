@@ -6,7 +6,7 @@
                 ClosedPosition: 0,
                 AdminBtn: $("<button>").addClass("btn btn-default").attr("id", "adminToggle").text(frontEndAdmin.toggleLabel),
                 AdminBtnWrap: $("<div>").addClass("admin-panel-taggle-wrap"),
-                AdminFrame: $("<iframe>").attr("id", "admin-frame").attr("src", frontEndAdmin.editHref + "?removeContent=true"),
+                AdminFrame: $("<iframe>").attr("id", "admin-frame").attr("src", frontEndAdmin.editHref + "?frontEndAdmin=true"),
                 AdminFrameWrap: $("<div>").addClass("admin-frame-wrap"),
                 onmatch: function() {
                     var self = this;
@@ -78,24 +78,33 @@
             // set the X-REMOVE-CONTENT header so FrontendAdminSitePageExtension removes the content field
             $("#admin-frame").entwine({
                 onmatch: function() {
-                    $("#admin-frame").load(function() {
-                        // Get the iframes window
-                        var fWindow = $(this)[0].contentWindow,
+                    this.load(function() {
+                        var
+                                // Get the iframes window
+                                fWindow = $(this)[0].contentWindow,
                                 // Get the iframes document
 //                                fDocument = $(this)[0].contentWindow.document,
                                 // Get a refernce to the iframes jquery
                                 f$ = fWindow.jQuery;
 
+                        // Remove the preview mode selector as it doesnt make much sense in this context
+                        f$("#preview-mode-dropdown-in-content").entwine({
+                            onmatch: function() {
+                                this.remove();
+                            }
+                        });
+
                         // Set the X-REMOVE-CONTENT for all ajax requests in the admin panel iframe
                         f$.ajaxSetup({
                             beforeSend: function(xmlhttp) {
-                                xmlhttp.setRequestHeader("X-REMOVE-CONTENT", "true");
+                                xmlhttp.setRequestHeader("X-FRONT-END-ADMIN", "true");
                             }
                         });
-//                if (settings.url == "admin/pages/treeview") {
-//                    var tree = f$(".jstree");
-//                }
-//            });
+//                        $(fDocument).ajaxComplete(function(event, xhr, settings) {
+//                            if (settings.url == "admin/pages/treeview") {
+//                                var tree = f$(".jstree");
+//                            }
+//                        });
                     });
                 }
             });
