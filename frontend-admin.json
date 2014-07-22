@@ -20,7 +20,7 @@
     },
     "licenses": [
         {
-            "type": "BSD",
+            "type": "BSD-3-Clause",
             "url": "http://www.silverstripe.org/bsd-license/"
         }
     ]

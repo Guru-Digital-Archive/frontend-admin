@@ -1,0 +1,28 @@
+{
+    "name": "gdmedia/silverstripe-frontend-admin",
+    "description": "Front end admin for Silverstripe",
+    "type": "silverstripe-module",
+    "homepage": "https://github.com/gurudigital/frontend-admin",
+    "keywords": ["silverstripe", "some-tag", "some-other-tag"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Corey Sewell - Guru Digital Media",
+            "email": "corey@gdmedia.tv"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/gurudigital/frontend-admin/issues"
+    },
+    "require": {
+        "silverstripe/cms": "~3.0",
+        "silverstripe/framework": "~3.0"
+    },
+    "extra": {
+        "installer-name": "silverstripe-frontend-admin",
+        "screenshots": [
+            "assets/screenshots/Silverstripe-Frontend-Admin.png",
+            "assets/screenshotsSilverstripe-Frontend-Editor-TinyMCE-4.png"
+        ]
+    }
+}

@@ -28,3 +28,8 @@ A flyout menu containing the cms admin is also injected into the front end, so y
 <ul>
 <li>Embedding media via (such as youtube) Silverstripe MediaFrom currently does not work as expected</li>
 </ul>
+
+<h2>Screenshots</h2>
+![Alt text](assets/screenshots/Silverstripe-Frontend-Admin.png?raw=true "Frontend admin open")
+![Alt text](assets/screenshots/Silverstripe-Frontend-Editor-TinyMCE-4 ?raw=true "Frontend editor open")
+
