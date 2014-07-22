@@ -1,11 +1,3 @@
-/*
- *  Silverstripe front end admin  - v0.1
- *  Front end admin for Silverstripe
- *  
- *
- *  Made by Corey Sewell
- *  Under BSD License
- */
 (function($) {
     $.entwine("ss", function($) {
         $("form.htmleditorfield-mediaform").entwine({
