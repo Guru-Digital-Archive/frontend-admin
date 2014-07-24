@@ -1,11 +1,3 @@
-/*
- *  Silverstripe front end admin  - v0.1
- *  Front end admin for Silverstripe
- *
- *
- *  Made by Corey Sewell - Guru Digital Media
- *  Under BSD License
- */
 (function($) {
     /**
      * Persistent settings
@@ -128,12 +120,15 @@
                                             )
                                     );
 
+                    // Check to see if the user has set a top position for the admin panel
                     if (!isNaN(settings.y)) {
-                        self.css("top", settings.y);
+                        self.css({top: settings.y + "px"});
                     }
+                    // Check to see if the user has set a width for the admin panel
                     if (!isNaN(settings.width)) {
                         self.getAdminFrameWrap().width(settings.width);
                     }
+                    // Check to see if the user has set a width for the admin panel
                     if (!isNaN(settings.height)) {
                         self.getAdminFrameWrap().height(settings.height);
                     }
