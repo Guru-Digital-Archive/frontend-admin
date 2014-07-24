@@ -83,6 +83,11 @@ $adminPanelBackground: #fff;
         text-transform: none;
         font-weight: normal;
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        float: none;
+        &:after, &:before{
+            content: '';
+            display: none;
+        }
         @include background-image(linear-gradient(top, white 0%, #e0e0e0 100%));
         filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFE0E0E0', GradientType=0);
         filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
