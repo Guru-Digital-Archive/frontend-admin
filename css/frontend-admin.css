@@ -13,6 +13,22 @@
   -moz-border-radius-bottomright: 1px solid #aaaaaa;
   -webkit-border-bottom-right-radius: 1px solid #aaaaaa;
   border-bottom-right-radius: 1px solid #aaaaaa; }
+  .admin-panel .admin-tools-wrap {
+    margin-bottom: 6px;
+    padding: 3px 6px; }
+    .admin-panel .admin-tools-wrap .ui-button-text {
+      padding-top: 0.14em;
+      padding-bottom: .14em; }
+    .admin-panel .admin-tools-wrap .ui-button-text-icon-primary .ui-button-text {
+      padding-left: 1.9em; }
+    .admin-panel .admin-tools-wrap .ui-button-text-icons .ui-button-text {
+      padding-right: 1.9em;
+      padding-left: 1.9em; }
+    .admin-panel .admin-tools-wrap .ui-button-text-icon-secondary .ui-button-text {
+      padding-right: 1.9em; }
+    .admin-panel .admin-tools-wrap .btn.btn-default.ui-state-active, .admin-panel .admin-tools-wrap .btn.btn-default.ui-state-active.ui-state-hover {
+      background-image: none;
+      background: #fff; }
   .admin-panel .admin-frame-wrap {
     width: 700px;
     height: 500px; }
@@ -23,7 +39,7 @@
       -moz-border-radius: 4px;
       -webkit-border-radius: 4px;
       border-radius: 4px; }
-  .admin-panel .admin-panel-taggle-wrap {
+  .admin-panel .admin-panel-toggle-wrap {
     border-left: medium none;
     float: right;
     padding: 6px 4px 6px 6px;
@@ -41,27 +57,27 @@
     -moz-border-radius-bottomright: 4px;
     -webkit-border-bottom-right-radius: 4px;
     border-bottom-right-radius: 4px; }
-    .admin-panel .admin-panel-taggle-wrap .btn.btn-default {
-      color: #333333;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      padding: 0;
-      font-size: 14px;
-      line-height: 1.428571429;
-      letter-spacing: normal;
-      margin: 0;
-      text-transform: none;
-      font-weight: normal;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      background-image: -moz-linear-gradient(top, #ffffff 0%, #e0e0e0 100%);
-      background-image: -webkit-linear-gradient(top, #ffffff 0%, #e0e0e0 100%);
-      background-image: linear-gradient(to bottom, #ffffff 0%, #e0e0e0 100%);
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFE0E0E0', GradientType=0);
-      filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-      text-shadow: 0 1px 0 white;
-      -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
-      -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075); }
+  .admin-panel .btn.btn-default {
+    color: #333333;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.428571429;
+    letter-spacing: normal;
+    margin: 0;
+    text-transform: none;
+    font-weight: normal;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-image: -moz-linear-gradient(top, #ffffff 0%, #e0e0e0 100%);
+    background-image: -webkit-linear-gradient(top, #ffffff 0%, #e0e0e0 100%);
+    background-image: linear-gradient(to bottom, #ffffff 0%, #e0e0e0 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFE0E0E0', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+    text-shadow: 0 1px 0 white;
+    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075); }
   .admin-panel.admin-menu-hide {
     position: absolute;
     left: -1000%;

@@ -8,5 +8,8 @@ var frontEndAdmin = {
     mediaURL: "$mediaURL",
     toggleIconClosed: "ui-icon-circle-triangle-e",
     toggleIconOpen: "ui-icon-circle-triangle-w",
-    toggleLabel: "Admin"
+    toggleLabel: "Admin",
+    editModeLabel: "Edit mode",
+    highlightLabel: "Hightlight edit areas",
+    cmsLabelLink: "View fullscreen"
 };

@@ -14,6 +14,38 @@ $adminPanelBackground: #fff;
     padding: 6px 6px 6px 200px;
     margin-left: 53px;
     @include border-bottom-radius($adminPanelBorderRadius);
+
+    .admin-tools-wrap{
+        margin-bottom: 6px;
+        padding: 3px 6px;
+        .ui-button-text{
+            padding-top: 0.14em;
+            padding-bottom: .14em;
+        }
+        .ui-button-text-icon-primary{
+            .ui-button-text{
+                padding-left: 1.9em;
+            }
+        }
+        .ui-button-text-icons{
+            .ui-button-text{
+                padding-right: 1.9em;
+                padding-left: 1.9em;
+            }
+
+        }
+        .ui-button-text-icon-secondary{
+            .ui-button-text{
+                padding-right: 1.9em;
+            }
+        }
+        .btn.btn-default{
+            &.ui-state-active,&.ui-state-active.ui-state-hover{
+                background-image:none;
+                background: #fff;
+            }
+        }
+    }
     .admin-frame-wrap{
         width: 700px;
         height: 500px;
@@ -25,7 +57,7 @@ $adminPanelBackground: #fff;
         }
     }
 
-    .admin-panel-taggle-wrap {
+    .admin-panel-toggle-wrap {
         border-left: medium none;
         float: right;
         padding: 6px 4px 6px 6px;
@@ -38,24 +70,24 @@ $adminPanelBackground: #fff;
         border-bottom: $adminPanelBorder;
         background: $adminPanelBackground;
         @include border-right-radius(4px);
-        .btn.btn-default{
-            color: #333333;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            padding:0;
-            font-size: 14px;
-            line-height: 1.428571429;
-            letter-spacing: normal;
-            margin:0;
-            text-transform: none;
-            font-weight: normal;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            @include background-image(linear-gradient(top, white 0%, #e0e0e0 100%));
-            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFE0E0E0', GradientType=0);
-            filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-            @include text-shadow(0 1px 0 #fff);
-            @include box-shadow(inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075));
-        }
+    }
+    .btn.btn-default{
+        color: #333333;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        padding:0;
+        font-size: 14px;
+        line-height: 1.428571429;
+        letter-spacing: normal;
+        margin:0;
+        text-transform: none;
+        font-weight: normal;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        @include background-image(linear-gradient(top, white 0%, #e0e0e0 100%));
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFE0E0E0', GradientType=0);
+        filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+        @include text-shadow(0 1px 0 #fff);
+        @include box-shadow(inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075));
     }
 
     &.admin-menu-hide{

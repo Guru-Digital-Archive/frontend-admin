@@ -1,3 +1,5 @@
+@import "compass/css3";
+
 .mce-tinymce{
     button{
         text-transform: none;
@@ -10,4 +12,13 @@
     .mce-container-body{
         background: url(../../framework/admin/images/spinner.gif) no-repeat 50% 50% #e6eaed;
     }
-} 
+}
+.highlight-editable{
+    .frontend-editable{
+        border: 1px solid #aaaaaa;
+        margin: -1px;
+        &:hover{
+            @include box-shadow(  0px 0px 5px 0px rgba(50, 50, 50, 0.75));
+        }
+    }
+}

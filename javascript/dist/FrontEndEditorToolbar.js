@@ -4,6 +4,14 @@
  *  
  *
  *  Made by Corey Sewell - Guru Digital Media
+ *  Under BSD-3-Clause License
+ */
+/*
+ *  Silverstripe front end admin  - v0.1
+ *  Front end admin for Silverstripe
+ *  
+ *
+ *  Made by Corey Sewell - Guru Digital Media
  *  Under BSD License
  */
 

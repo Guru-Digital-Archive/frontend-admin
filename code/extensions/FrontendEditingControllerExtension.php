@@ -18,27 +18,27 @@ class FrontendEditingControllerExtension extends Extension {
         $controller = $this->owner;
         /* @var $page Page */
         $page       = $controller->data();
-        if ($page->canEdit()) {
+        $editable   = FrontendEditing::editingEnabled() && $page->canEdit();
+        $admin      = Permission::check('ADMIN');
+        if ($editable || $admin) {
             Requirements::javascript(FRAMEWORK_DIR . '/thirdparty/jquery/jquery.js');
             Requirements::javascript(FRAMEWORK_DIR . '/thirdparty/jquery-ui/jquery-ui.js');
+            Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/ssui.core.js');
             Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
+            Requirements::javascriptTemplate(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdminTemplate.js', $this->getConfig($page));
+            Requirements::css(FRAMEWORK_DIR . '/thirdparty/jquery-ui-themes/smoothness/jquery-ui.css');
+        }
+        if ($admin) {
+            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdmin.js');
+            Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-admin.css');
+        }
+        if (FrontendEditing::editingEnabled() && $page->canEdit()) {
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/jquery.jeditable.js');
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/tinymce.min.js');
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/jquery.tinymce.min.js');
-
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce_ssfebuttons/tinymce_ssfebuttons.js');
-//                                          \frontend-admin\javascript\thirdparty\tinymce_ssfebuttons\tinymce_ssfebuttons.js
-
-
-            Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/ssui.core.js');
-            Requirements::javascriptTemplate(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdminTemplate.js', $this->getConfig($page));
-            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdmin.js');
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditor.js');
-            Requirements::css(FRAMEWORK_DIR . '/thirdparty/jquery-ui-themes/smoothness/jquery-ui.css');
-            Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-admin.css');
-            Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editing.css');
             Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor.css');
-//frontend-editing
         }
     }
 

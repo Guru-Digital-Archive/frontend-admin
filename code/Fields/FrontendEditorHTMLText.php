@@ -24,11 +24,12 @@ class FrontendEditorHTMLText extends HTMLText {
      * @return string
      */
     public function forTemplate() {
-        if (FrontendEditing::isEditable($this)) {
+        $isEditable = FrontendEditing::editingEnabled() && FrontendEditing::isEditable($this);
+        if ($isEditable) {
             $this->processShortcodes = false;
         }
         $value = parent::forTemplate();
-        if (FrontendEditing::isEditable($this) && strpos($value, "<title") !== 0) {
+        if ($isEditable) {
             $randId = uniqid();
             $value  = '<div id="' . $randId . '" contenteditable=true class="frontend-editable frontend-editable-html" data-feclass="' . FrontendEditing::getClassName($this) . '" data-feid="' . FrontendEditing::getID($this) . '" data-fefield="' . $this->name . '">' . $value . '</div>';
         }

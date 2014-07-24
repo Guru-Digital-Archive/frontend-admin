@@ -45,4 +45,8 @@ class FrontendEditing {
         return $dbField->editID;
     }
 
+    public static function editingEnabled() {
+        return (filter_input(INPUT_COOKIE, 'editmode') !== "false");
+    }
+
 }

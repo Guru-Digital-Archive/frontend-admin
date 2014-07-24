@@ -5,4 +5,12 @@
 .mce-frontend-editable-dialog .mce-container-body {
   background: url(../../framework/admin/images/spinner.gif) no-repeat 50% 50% #e6eaed; }
 
+.highlight-editable .frontend-editable {
+  border: 1px solid #aaaaaa;
+  margin: -1px; }
+  .highlight-editable .frontend-editable:hover {
+    -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75); }
+
 /*# sourceMappingURL=frontend-editor.css.map */
