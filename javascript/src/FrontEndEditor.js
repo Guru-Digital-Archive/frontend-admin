@@ -5,6 +5,40 @@
         $("title").html(originalTitle.text());
     }
     $(function() {
+        function saveFromEditor(editor) {
+            var
+                    $content = "",
+                    $element = $(editor.getElement()),
+                    toPost = {
+                        fefield: $element.data("fefield"),
+                        feid: $element.data("feid"),
+                        feclass: $element.data("feclass"),
+                        value: editor.getContent()
+                    };
+            /**
+             * Stolen from framework\thirdparty\tinymce_ssbuttons\editor_plugin_src.js and adapted to work with TinyMCE 4
+             */
+            $element.data("originalContent", editor.getContent());
+            $content = $(toPost.value);
+            $content.find(".ss-htmleditorfield-file.embed").each(function() {
+                var
+                        el = $(this),
+                        shortCode = "[embed width='" + el.attr("width") + "'" +
+                        " height='" + el.attr("height") + "'" +
+                        " class='" + el.data("cssclass") + "'" +
+                        " thumbnail='" + el.data("thumbnail") + "'" +
+                        "]" + el.data("url") +
+                        "[/embed]";
+                el.replaceWith(shortCode);
+            });
+            toPost.value = $("<div />").append($content).html(); // Little hack to get outerHTML string
+
+            editor.getBody().setAttribute("contenteditable", "false");
+            $.post(frontEndAdmin.baseHref + "home/fesave", toPost, function(data) {
+                editor.getBody().setAttribute("contenteditable", "true");
+                editor.setContent(data);
+            });
+        }
         frontEndAdmin.tinymceDefaults = {
             plugins: [
                 "save advlist autolink lists image charmap print preview hr anchor pagebreak",
@@ -12,8 +46,9 @@
                 "insertdatetime media nonbreaking save table contextmenu directionality",
                 "emoticons template paste textcolor  nonbreaking SSFEButtons"
             ],
-            toolbar1: "save insertfile undo redo | styleselect | fontselect fontsizeselect | bold italic underline",
-            toolbar2: "alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ssfeLink ssfeimage | print media | table | forecolor backcolor emoticons",
+            toolbar1: "save undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ssfeLink ssfeimage",
+            toolbar2: "print preview media | forecolor backcolor emoticons",
+            contextmenu: "ssfeLink ssfeimage inserttable | cell row column deletetable",
             inline: true,
             image_advtab: true,
             remove_script_host: true,
@@ -28,22 +63,7 @@
 //            formats: frontEndAdmin.settings.wysiswgFormats,
 //            templates: frontEndAdmin.settings.linkBase + "tinymcetemplates.json",
             save_enablewhendirty: false,
-            save_onsavecallback: function(editor) {
-                var
-                        $element = $(editor.getElement()),
-                        toPost = {
-                            fefield: $element.data("fefield"),
-                            feid: $element.data("feid"),
-                            feclass: $element.data("feclass"),
-                            value: editor.getContent()
-                        };
-                $element.data("originalContent", toPost.value);
-                editor.getBody().setAttribute("contenteditable", "false");
-                $.post(frontEndAdmin.baseHref + "home/fesave", toPost, function(data) {
-                    editor.getBody().setAttribute("contenteditable", "true");
-                    editor.setContent(data);
-                });
-            }
+            save_onsavecallback: saveFromEditor
         };
         frontEndAdmin.tinymceVarCharDefaults = {
             plugins: [
@@ -55,22 +75,7 @@
             toolbar_items_size: "small",
             inline: true,
             save_enablewhendirty: false,
-            save_onsavecallback: function(editor) {
-                var
-                        $element = $(editor.getElement()),
-                        toPost = {
-                            fefield: $element.data("fefield"),
-                            feid: $element.data("feid"),
-                            feclass: $element.data("feclass"),
-                            value: editor.getContent()
-                        };
-                $element.data("originalContent", toPost.value);
-                editor.getBody().setAttribute("contenteditable", "false");
-                $.post(frontEndAdmin.baseHref + "home/fesave", toPost, function(data) {
-                    editor.getBody().setAttribute("contenteditable", "true");
-                    editor.setContent(data);
-                });
-            }
+            save_onsavecallback: saveFromEditor
         };
 
         $(".frontend-editable-varchar").tinymce(frontEndAdmin.tinymceVarCharDefaults);

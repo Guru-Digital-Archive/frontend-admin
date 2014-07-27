@@ -21,11 +21,6 @@ A flyout menu containing the cms admin is also injected into the front end, so y
 
 ##To do
 * Test it more, especially around permissions
-* Get media embed working
-
-##Known Issues
-* Embedding external media via the Silverstripe MediaFrom (such as youtube) does not work as expected.<br>
-When viewing the page, only the thumbnail shows.<br/>When editing a page with an embedded element, only the shortcode is shown
 
 ##Screenshots
 ####Admin closed, TinyMCE active

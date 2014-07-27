@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
                 watch: {
                   scripts: {
-                    files: ['javascript/src/*.js'],
+                    files: ['javascript/src/*.js','javascript/thirdparty/tinymce_ssfebuttons/src/*.js'],
                     tasks: ['default'],
                     options: {
                       spawn: false,
@@ -26,7 +26,6 @@ module.exports = function(grunt) {
 				" *  Under <%= pkg.licenses[0].type %> License\n" +
 				" */\n"
 		},
-
 		// Concat definitions
 		concat: {
 			dist: {
@@ -34,6 +33,7 @@ module.exports = function(grunt) {
                                 'javascript/dist/FrontEndAdmin.js': ['javascript/src/FrontEndAdmin.js'],
                                 'javascript/dist/FrontEndEditor.js': ['javascript/src/FrontEndEditor.js'],
                                 'javascript/dist/FrontEndEditorToolbar.js': ['javascript/src/FrontEndEditorToolbar.js'],
+                                'javascript/thirdparty/tinymce_ssfebuttons/tinymce_ssfebuttons.js': ['javascript/thirdparty/tinymce_ssfebuttons/src/tinymce_ssfebuttons.js']
                             }
 			},
 			options: {
@@ -46,7 +46,8 @@ module.exports = function(grunt) {
                         src: [
                             "javascript/src/FrontEndAdmin.js",
                             "javascript/src/FrontEndEditor.js",
-                            "javascript/src/FrontEndEditorToolbar.js"
+                            "javascript/src/FrontEndEditorToolbar.js",
+                            "javascript/thirdparty/tinymce_ssfebuttons/src/tinymce_ssfebuttons.js"
                         ],
 			options: {
 				jshintrc: ".jshintrc"
@@ -60,6 +61,7 @@ module.exports = function(grunt) {
                                 'javascript/dist/FrontEndAdmin.min.js': ['javascript/dist/FrontEndAdmin.js'],
                                 'javascript/dist/FrontEndEditor.min.js': ['javascript/dist/FrontEndEditor.js'],
                                 'javascript/dist/FrontEndEditorToolbar.min.js': ['javascript/dist/FrontEndEditorToolbar.js'],
+                                'javascript/thirdparty/tinymce_ssfebuttons/tinymce_ssfebuttons.min.js':['javascript/thirdparty/tinymce_ssfebuttons/tinymce_ssfebuttons.js']
                             }
                         },
 			options: {
