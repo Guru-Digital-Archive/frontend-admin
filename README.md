@@ -11,10 +11,17 @@ A flyout menu containing the cms admin is also injected into the front end, so y
 </ul>
 
 <h2>Installation</h2>
+<h3>Composer</h3>
+<ul>
+<li>On the command line, cd into your sites root folder</li>
+<li>run composer require gdmedia/silverstripe-frontend-admin dev-master</li>
+<li>Run dev/build?flush=all in your browsers</li>
+</ul>
+<h3>Manually</h3>
 <ul>
 <li>Download the module from https://github.com/gurudigital/frontend-admin/archive/master.zip</li>
 <li>Extract the files into your silverstripe root folder</li>
-<li>Run dev/build?flush=all</li>
+<li>Run dev/build?flush=all in your browsers</li>
 </ul>
 
 <h2>To do</h2>
