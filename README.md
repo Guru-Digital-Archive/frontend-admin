@@ -24,7 +24,7 @@ A flyout menu containing the cms admin is also injected into the front end, so y
 </ul>
 <h2>Known Issues</h2>
 <ul>
-<li>Embedding media via (such as youtube) Silverstripe MediaFrom currently does not work as expected</li>
+<li>Embedding external media via the Silverstripe MediaFrom (such as youtube) does not work as expected.<br>When viewing the page, only the thumbnail shows.<br/>When editing a page with an embedded element, only the shortcode is shown</li>
 </ul>
 
 <h2>Screenshots</h2>
