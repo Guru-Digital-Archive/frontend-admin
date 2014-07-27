@@ -20,7 +20,6 @@ A flyout menu containing the cms admin is also injected into the front end, so y
 <h2>To do</h2>
 <ul>
 <li>Test it more, especially around permissions</li>
-<li>Enable editing for Varchar types</li>
 <li>Get media embed working</li>
 </ul>
 <h2>Known Issues</h2>

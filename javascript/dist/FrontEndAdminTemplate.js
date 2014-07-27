@@ -12,4 +12,5 @@ var frontEndAdmin = {
     editModeLabel: "Edit mode",
     highlightLabel: "Hightlight edit areas",
     cmsLabelLink: "View fullscreen"
+
 };
