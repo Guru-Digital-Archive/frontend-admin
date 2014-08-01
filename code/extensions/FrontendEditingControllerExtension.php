@@ -76,7 +76,7 @@ class FrontendEditingControllerExtension extends Extension {
         $baseDir       = Director::baseURL();
         $baseHref      = Director::protocolAndHost() . $baseDir;
         $editHref      = ($page) ? $baseHref . $page->CMSEditLink() : null;
-        $pageHierarchy = [$page->ID];
+        $pageHierarchy = array($page->ID);
         if ($page) {
             $parent = $page->Parent();
             while ($parent && $parent->exists()) {
@@ -85,7 +85,7 @@ class FrontendEditingControllerExtension extends Extension {
             }
         }
 //        FrontEndEditorToolbar/LinkForm
-        $jsConfig = [
+        $jsConfig = array(
             'linkURL'       => Controller::join_links(FrontEndEditorToolbar::create()->Link(), "LinkForm"),
             'mediaURL'      => Controller::join_links(FrontEndEditorToolbar::create()->Link(), "MediaForm"),
             'themeDir'      => $themeDir,
@@ -93,7 +93,7 @@ class FrontendEditingControllerExtension extends Extension {
             'baseHref'      => $baseHref,
             'editHref'      => $editHref,
             'pageHierarchy' => Convert::raw2json(array_reverse($pageHierarchy))
-        ];
+        );
 
         return $jsConfig;
     }
