@@ -21,6 +21,10 @@ class FrontendEditingControllerExtension extends Extension {
         $editable   = FrontendEditing::editingEnabled() && $page->canEdit();
         $admin      = Permission::check('ADMIN');
         if ($editable || $admin) {
+
+            //Flexslider imports easing, which breaks?
+            Requirements::block('flexslider/javascript/jquery.easing.1.3.js');
+
             Requirements::javascript(FRAMEWORK_DIR . '/thirdparty/jquery/jquery.js');
             Requirements::javascript(FRAMEWORK_DIR . '/thirdparty/jquery-ui/jquery-ui.js');
             Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/ssui.core.js');
