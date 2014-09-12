@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
     /**
      * Persistent settings
      *
@@ -30,9 +30,9 @@
          *
          * @returns {undefined}"
          */
-        load: function() {
+        load: function () {
             var cookiesSplit = document.cookie.split(";");
-            $.each(this, function(key, value) {
+            $.each(this, function (key, value) {
                 var match, i, cookie;
                 if (!$.isFunction(value)) {
                     match = key + "=";
@@ -53,10 +53,10 @@
          *
          * @returns {undefined}
          */
-        save: function() {
+        save: function () {
             var d = new Date();
             d.setTime(d.getTime() + 1209600000);
-            $.each(this, function(key, value) {
+            $.each(this, function (key, value) {
                 if (!$.isFunction(value)) {
                     document.cookie = key + "=" + value + "; expires=" + d.toGMTString() + "; path=/";
                 }
@@ -65,16 +65,16 @@
     };
     settings.load();
 
-    $(function() {
+    $(function () {
         var cmsUrl = $("meta[name='x-cms-edit-link']").attr("content");
 
-        $.entwine("ss.frontEndAdmin", function($) {
+        $.entwine("ss.frontEndAdmin", function ($) {
             $("div.admin-panel").entwine({
                 OpenPosition: 0,
                 ClosedPosition: 0,
                 AdminBtn: $("<button>").addClass("btn btn-default").attr("id", "adminToggle").text(frontEndAdmin.toggleLabel),
                 AdminBtnWrap: $("<div>").addClass("admin-panel-toggle-wrap"),
-                AdminFrame: $("<iframe>").attr("id", "admin-frame").attr("src", frontEndAdmin.editHref + "?frontEndAdmin=true"),
+                AdminFrame: $("<iframe>").attr("id", "admin-frame").attr("src", frontEndAdmin.editHref + (frontEndAdmin.editHref.split("?")[1] ? "&" : "?") + "frontEndAdmin=true"),
                 AdminFrameWrap: $("<div>").addClass("admin-frame-wrap"),
                 ToolsWrap: $("<div>").addClass("admin-tools-wrap ui-widget-header ui-corner-all"),
                 ToolsEditMode: $("<input type='checkbox' />").data("settings-key", "editmode").attr("id", "admin-tools-editmode").addClass("admin-tools-editmode admin-tools-toggle saveable"),
@@ -82,7 +82,7 @@
                 ToolsHighlight: $("<input type='checkbox'/>").data("settings-key", "highlight").attr("id", "admin-tools-highlight").addClass("admin-tools-highlight admin-tools-toggle saveable"),
                 ToolsHighlightLabel: $("<label>" + frontEndAdmin.highlightLabel + "</label>").addClass("btn btn-default"),
                 ToolsCMSLink: $("<a>" + frontEndAdmin.cmsLabelLink + "</a>").attr("href", cmsUrl).attr("target", "_blank").addClass("admin-tools-cmslink admin-tools-link btn btn-default"),
-                onmatch: function() {
+                onmatch: function () {
                     // Save a reference to this for use in callbacks
                     var self = this;
 
@@ -134,16 +134,16 @@
                     }
 
                     // Position and show the admin panel
-                    self.calculatePositions().hide().removeClass("admin-menu-hide").css({left: self.getClosedPosition()}).fadeIn(function() {
+                    self.calculatePositions().hide().removeClass("admin-menu-hide").css({left: self.getClosedPosition()}).fadeIn(function () {
                         // Allow the admin panel to be dragged up and down
-                        self.draggable({handle: self.getAdminBtnWrap().parent(), axis: "y", stop: function() {
+                        self.draggable({handle: self.getAdminBtnWrap().parent(), axis: "y", stop: function () {
                                 settings.y = $(this).position().top;
                                 settings.save();
                             }
                         });
 
                         // Allow the admin panel to be resized
-                        self.getAdminFrameWrap().resizable({stop: function() {
+                        self.getAdminFrameWrap().resizable({stop: function () {
                                 // Calculate the open and closed positions after resizing
                                 $("div.admin-panel").calculatePositions();
                                 settings.width = $(this).width();
@@ -158,7 +158,7 @@
                  * @param {frontEndAdmin~afterAnimate} callback Fired once the open/close animation is complete
                  * @returns {undefined}
                  */
-                toggleAdmin: function(open, callback) {
+                toggleAdmin: function (open, callback) {
                     var animationTime = 400,
                             self = this,
                             currentPos = parseInt(self.position().left, 10),
@@ -169,12 +169,12 @@
                     open = (animateTo === self.getOpenPosition());
 
                     // Change the buttons icon half way though opening the admin panel
-                    setTimeout(function() {
+                    setTimeout(function () {
                         self.getAdminBtn().setIcon(open ? frontEndAdmin.toggleIconOpen : frontEndAdmin.toggleIconClosed);
                     }, animationTime / 2);
 
                     // Animate the admin panel open or closed
-                    self.animate({left: animateTo}, animationTime, "easeInBack", function() {
+                    self.animate({left: animateTo}, animationTime, "easeInBack", function () {
                         if ($.isFunction(callback)) {
                             callback.apply(self, open);
                         }
@@ -185,7 +185,7 @@
                  *
                  * @returns {undefined}
                  */
-                calculatePositions: function() {
+                calculatePositions: function () {
                     this.setOpenPosition(-((parseInt(this.css("padding-left"), 10) + parseInt(this.css("margin-left"), 10)) - (parseInt(this.css("padding-right"), 10) / 2)));
                     this.setClosedPosition(-(this.outerWidth() + parseInt(this.css("margin-left"), 10)));
                     return this;
@@ -193,35 +193,35 @@
 
             });
             $("#adminToggle").entwine({
-                onmatch: function() {
+                onmatch: function () {
                     this.button({icons: {secondary: frontEndAdmin.toggleIconClosed}});
                 },
-                onclick: function() {
+                onclick: function () {
                     $("div.admin-panel").toggleAdmin();
                 },
-                setIcon: function(icon) {
+                setIcon: function (icon) {
                     this.button({icons: {secondary: icon}});
                 }
             });
             $(".admin-tools-editmode").entwine({
-                onmatch: function() {
+                onmatch: function () {
                     this.button({icons: {primary: "ui-icon-pencil", secondary: "ui-icon-circle-close"}});
                     this._super();
                 },
-                onchange: function() {
+                onchange: function () {
                     this._super();
                     $(".admin-tools-highlight").button("option", "disabled", !this.prop("checked"));
                 },
-                onclick: function() {
+                onclick: function () {
                     window.location.reload();
                 }
             });
             $(".admin-tools-highlight").entwine({
-                onmatch: function() {
+                onmatch: function () {
                     this.button({icons: {primary: "ui-icon-circlesmall-minus", secondary: "ui-icon-circle-close"}});
                     this._super();
                 },
-                onchange: function() {
+                onchange: function () {
                     if (this.prop("checked")) {
                         $("body").addClass("highlight-editable");
                     } else {
@@ -231,7 +231,7 @@
                 }
             });
             $(".admin-tools-toggle").entwine({
-                onchange: function() {
+                onchange: function () {
                     var icons = this.button("option", "icons");
                     icons.secondary = this.prop("checked") ? "ui-icon-circle-check" : "ui-icon-circle-close";
                     this.button({icons: icons});
@@ -239,12 +239,12 @@
                 }
             });
             $(".admin-tools-cmslink").entwine({
-                onmatch: function() {
+                onmatch: function () {
                     this.button({icons: {primary: "ui-icon-newwin"}});
                 }
             });
             $(".saveable").entwine({
-                onmatch: function() {
+                onmatch: function () {
                     this._super();
                     var settingKey = this.data("settings-key"), settingValue;
                     if (typeof settings[settingKey] !== "undefined") {
@@ -257,7 +257,7 @@
                         this.change();
                     }
                 },
-                onchange: function() {
+                onchange: function () {
                     var settingKey = this.data("settings-key"), settingValue;
                     if (typeof settings[settingKey] !== "undefined") {
                         settingValue = settings[settingKey];
@@ -275,8 +275,8 @@
             // To ensure saving pages from within the admin panel does not overwrite content saved from the front end editor
             // set the X-REMOVE-CONTENT header so FrontendAdminSitePageExtension removes the content field
             $("#admin-frame").entwine({
-                onmatch: function() {
-                    this.load(function() {
+                onmatch: function () {
+                    this.load(function () {
                         var
                                 // Get the iframes window
                                 fWindow = $(this)[0].contentWindow,
@@ -287,14 +287,14 @@
 
                         // Remove the preview mode selector as it doesnt make much sense in this context
                         f$("#preview-mode-dropdown-in-content").entwine({
-                            onmatch: function() {
+                            onmatch: function () {
                                 this.remove();
                             }
                         });
 
                         // Set the X-REMOVE-CONTENT for all ajax requests in the admin panel iframe
                         f$.ajaxSetup({
-                            beforeSend: function(xmlhttp) {
+                            beforeSend: function (xmlhttp) {
                                 xmlhttp.setRequestHeader("X-FRONT-END-ADMIN", "true");
                             }
                         });
