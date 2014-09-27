@@ -46,7 +46,7 @@ class FrontendEditing {
     }
 
     public static function editingEnabled() {
-        return (filter_input(INPUT_COOKIE, 'editmode') !== "false");
+        return (Cookie::get('editmode') !== 'false') && !Controller::curr()->getRequest()->offsetExists('stage');
     }
 
 }
