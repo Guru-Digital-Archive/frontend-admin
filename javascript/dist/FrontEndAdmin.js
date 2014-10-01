@@ -300,7 +300,11 @@
                             }
                         });
 
+                        // Make the logout link affect the top most window
+                        f$(".logout-link").attr("target", "_top");
+
                         // Set the X-REMOVE-CONTENT for all ajax requests in the admin panel iframe
+                        // This ensures saving a page does not overwrite content
                         f$.ajaxSetup({
                             beforeSend: function (xmlhttp) {
                                 xmlhttp.setRequestHeader("X-FRONT-END-ADMIN", "true");
