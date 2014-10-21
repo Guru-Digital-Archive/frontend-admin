@@ -91,74 +91,76 @@
                 ToolsHighlightLabel: $("<label>" + frontEndAdmin.highlightLabel + "</label>").addClass("btn btn-default"),
                 ToolsCMSLink: $("<a>" + frontEndAdmin.cmsLabelLink + "</a>").attr("href", cmsUrl).attr("target", "_blank").addClass("admin-tools-cmslink admin-tools-link btn btn-default"),
                 onmatch: function () {
-                    // Save a reference to this for use in callbacks
-                    var self = this;
+                    if (!$("body").hasClass("cms-dialog")) {
+                        // Save a reference to this for use in callbacks
+                        var self = this;
 
-                    // Build and append all the admin elements
-                    self
-                            .append(
-                                    self.getToolsWrap()
-                                    .append(
-                                            self.getToolsEditModeLabel().attr("for", self.getToolsEditMode().attr("id"))
-                                            )
-                                    .append(
-                                            self.getToolsEditMode()
-                                            )
-                                    .append(
-                                            self.getToolsHighlightLabel().attr("for", self.getToolsHighlight().attr("id"))
-                                            )
-                                    .append(
-                                            self.getToolsHighlight()
-                                            )
-                                    .append(
-                                            self.getToolsCMSLink()
-                                            )
-                                    );
-                    self
-                            .append(
-                                    self.getAdminFrameWrap()
-                                    .append(
-                                            self.getAdminFrame()
-                                            )
-                                    )
-                            .append(
-                                    self.getAdminBtnWrap()
-                                    .append(
-                                            self.getAdminBtn()
-                                            )
-                                    );
+                        // Build and append all the admin elements
+                        self
+                                .append(
+                                        self.getToolsWrap()
+                                        .append(
+                                                self.getToolsEditModeLabel().attr("for", self.getToolsEditMode().attr("id"))
+                                                )
+                                        .append(
+                                                self.getToolsEditMode()
+                                                )
+                                        .append(
+                                                self.getToolsHighlightLabel().attr("for", self.getToolsHighlight().attr("id"))
+                                                )
+                                        .append(
+                                                self.getToolsHighlight()
+                                                )
+                                        .append(
+                                                self.getToolsCMSLink()
+                                                )
+                                        );
+                        self
+                                .append(
+                                        self.getAdminFrameWrap()
+                                        .append(
+                                                self.getAdminFrame()
+                                                )
+                                        )
+                                .append(
+                                        self.getAdminBtnWrap()
+                                        .append(
+                                                self.getAdminBtn()
+                                                )
+                                        );
 
-                    // Check to see if the user has set a top position for the admin panel
-                    if (!isNaN(settings.y)) {
-                        self.css({top: settings.y + "px"});
-                    }
-                    // Check to see if the user has set a width for the admin panel
-                    if (!isNaN(settings.width)) {
-                        self.getAdminFrameWrap().width(settings.width);
-                    }
-                    // Check to see if the user has set a width for the admin panel
-                    if (!isNaN(settings.height)) {
-                        self.getAdminFrameWrap().height(settings.height);
-                    }
+                        // Check to see if the user has set a top position for the admin panel
+                        if (!isNaN(settings.y)) {
+                            self.css({top: settings.y + "px"});
+                        }
+                        // Check to see if the user has set a width for the admin panel
+                        if (!isNaN(settings.width)) {
+                            self.getAdminFrameWrap().width(settings.width);
+                        }
+                        // Check to see if the user has set a width for the admin panel
+                        if (!isNaN(settings.height)) {
+                            self.getAdminFrameWrap().height(settings.height);
+                        }
 
-                    // Position and show the admin panel
-                    self.calculatePositions().hide().removeClass("admin-menu-hide").css({left: self.getClosedPosition()}).fadeIn(function () {
-                        // Allow the admin panel to be dragged up and down
-                        self.draggable({handle: self.getAdminBtnWrap().parent(), axis: "y", stop: function () {
-                                settings.y = $(this).position().top;
-                                settings.save();
-                            }
+                        // Position and show the admin panel
+                        self.calculatePositions().hide().removeClass("admin-menu-hide").css({left: self.getClosedPosition()}).fadeIn(function () {
+                            // Allow the admin panel to be dragged up and down
+                            self.draggable({handle: self.getAdminBtnWrap().parent(), axis: "y", stop: function () {
+                                    settings.y = $(this).position().top;
+                                    settings.save();
+                                }
+                            });
+
+                            // Allow the admin panel to be resized
+                            self.getAdminFrameWrap().resizable({stop: function () {
+                                    // Calculate the open and closed positions after resizing
+                                    $("div.admin-panel").calculatePositions();
+                                    settings.width = $(this).width();
+                                    settings.height = $(this).height();
+                                    settings.save();
+                                }});
                         });
-
-                        // Allow the admin panel to be resized
-                        self.getAdminFrameWrap().resizable({stop: function () {
-                                // Calculate the open and closed positions after resizing
-                                $("div.admin-panel").calculatePositions();
-                                settings.width = $(this).width();
-                                settings.height = $(this).height();
-                                settings.save();
-                            }});
-                    });
+                    }
                 },
                 /**
                  *
