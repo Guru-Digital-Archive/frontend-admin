@@ -50,7 +50,6 @@ var frontEndAdmin = frontEndAdmin || {};
             toPost.value = $("<div />").append($content).html(); // Little hack to get outerHTML string
         }
         editor.getBody().setAttribute("contenteditable", "false");
-
         $.post(frontEndAdmin.baseHref + "home/fesave", toPost, function (data) {
             loadingMsg.hide();
             editor.getBody().setAttribute("contenteditable", "true");
@@ -66,7 +65,6 @@ var frontEndAdmin = frontEndAdmin || {};
                     value: this.val()
                 },
         loadingMsg = showMessage({content: "Saving " + toPost.fefield, type: "loading"});
-        loadingMsg.stickAround();
         $select.prop("disabled", true);
         $.post(frontEndAdmin.baseHref + "home/fesave", toPost, function (data) {
             loadingMsg.hide();
