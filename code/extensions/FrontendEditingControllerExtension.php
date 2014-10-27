@@ -52,38 +52,66 @@ class FrontendEditingControllerExtension extends Extension {
      * @return bool
      */
     public function fesave() {
-        if (Permission::check('ADMIN')) {
-            $feclass = $_REQUEST['feclass'];
-            $fefield = $_REQUEST['fefield'];
-            $feid    = $_REQUEST['feid'];
-            $value   = $_REQUEST['value'];
+        $response          = new stdClass();
+        $response->content = "An unknown error has occured";
+        $response->type    = "bad";
 
-            if ($feclass::has_extension('Versioned')) {
-                $record           = Versioned::get_by_stage($feclass, 'Live')->byID($feid);
-                $record->$fefield = $value;
-                $record->writeToStage('Stage');
-                $record->publish('Stage', 'Live');
+        /* @var $controller Controller */
+        $controller  = Controller::curr();
+        $feclass     = $controller->getRequest()->postVar('feclass');
+        $fefield     = $controller->getRequest()->postVar('fefield');
+        $feid        = $controller->getRequest()->postVar('feid');
+        $value       = $controller->getRequest()->postVar('value');
+        $isVersioned = $feclass::has_extension('Versioned');
+        $result      = false;
+        if (class_exists($feclass)) {
+            $record = $isVersioned ? Versioned::get_by_stage($feclass, 'Live')->byID($feid) : DataObject::get_by_id($feclass, $feid);
+            if (is_object($record)) {
+                $canEdit    = Permission::check('ADMIN') || method_exists($record, 'canEdit') && $record->canEdit();
+                $canPublish = Permission::check('ADMIN') || method_exists($record, 'canPublish') && $record->canPublish();
+                if ($canEdit) {
+                    $record->$fefield = $value;
+                    if ($isVersioned) {
+                        $result = $record->writeToStage('Stage');
+                        if ($canPublish) {
+                            $result = $record->publish('Stage', 'Live');
+                        }
+                    } else {
+                        $result = $record->write();
+                    }
+                } else {
+                    $response->content = "You do not have permision to edit this item";
+                }
             } else {
-                $obj           = DataObject::get_by_id($feclass, $feid);
-                $obj->$fefield = $value;
-                $obj->write();
+                $response->content = "Unable to fetch " . $feclass . " with id " . $feid;
             }
-            return $value;
+        } else {
+            $response->content = "Unable to find class " . $feclass;
         }
-        if (array_key_exists($_REQUEST, 'value')) {
-            return $_REQUEST['value'];
+
+        if ($result) {
+            $result            = $value;
+            $response->content = $fefield . " saved successfully";
+            $response->type    = "good";
         }
-        return false;
+        if ($controller->getRequest()->isAjax()) {
+            $controller->getResponse()->addHeader('Content-type', 'application/json');
+            $response = Convert::raw2json($response);
+        } else {
+            $response = array("message" => $response->content);
+        }
+        return $response;
     }
 
-    protected function getConfig($page = null) {
+    public function getConfig($page = null) {
         $themeDir      = $this->owner->ThemeDir();
         $baseDir       = Director::baseURL();
         $baseHref      = Director::protocolAndHost() . $baseDir;
         $editHref      = ($page) ? $baseHref . $page->CMSEditLink() : null;
-        $pageHierarchy = array($page->ID);
+        $pageHierarchy = array();
         if ($page) {
-            $parent = $page->Parent();
+            $pageHierarchy = array($page->ID);
+            $parent        = $page->Parent();
             while ($parent && $parent->exists()) {
                 $pageHierarchy[] = $parent->ID;
                 $parent          = $parent->Parent();
@@ -101,6 +129,16 @@ class FrontendEditingControllerExtension extends Extension {
         );
 
         return $jsConfig;
+    }
+
+    public function AddEditingIncludes() {
+        Requirements::javascriptTemplate(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdminTemplate.js', $this->getConfig());
+        Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/jquery.jeditable.js');
+        Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/tinymce.min.js');
+        Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/jquery.tinymce.min.js');
+        Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce_ssfebuttons/tinymce_ssfebuttons.js');
+        Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditor.js');
+        Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor.css');
     }
 
 }

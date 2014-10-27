@@ -1,16 +1,15 @@
-var frontEndAdmin = {
-    themeDir: "$themeDir",
-    baseDir: "$baseDir",
-    baseHref: "$baseHref",
-    editHref: "$editHref",
-    pageHierarchy: $pageHierarchy,
-    linkURL: "$linkURL",
-    mediaURL: "$mediaURL",
-    toggleIconClosed: "ui-icon-circle-triangle-e",
-    toggleIconOpen: "ui-icon-circle-triangle-w",
-    toggleLabel: "Admin",
-    editModeLabel: "Edit mode",
-    highlightLabel: "Hightlight edit areas",
-    cmsLabelLink: "View fullscreen"
+var frontEndAdmin = frontEndAdmin || {};
 
-};
+frontEndAdmin.themeDir = "$themeDir";
+frontEndAdmin.baseDir = "$baseDir";
+frontEndAdmin.baseHref = "$baseHref";
+frontEndAdmin.editHref = "$editHref";
+frontEndAdmin.pageHierarchy = $pageHierarchy;
+frontEndAdmin.linkURL = "$linkURL";
+frontEndAdmin.mediaURL = "$mediaURL";
+frontEndAdmin.toggleIconClosed = "ui-icon-circle-triangle-e";
+frontEndAdmin.toggleIconOpen = "ui-icon-circle-triangle-w";
+frontEndAdmin.toggleLabel = "Admin";
+frontEndAdmin.editModeLabel = "Edit mode";
+frontEndAdmin.highlightLabel = "Hightlight edit areas";
+frontEndAdmin.cmsLabelLink = "View fullscreen";

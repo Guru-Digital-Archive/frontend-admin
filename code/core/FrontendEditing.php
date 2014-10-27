@@ -2,6 +2,8 @@
 
 class FrontendEditing {
 
+    public static $ForceEditable = false;
+
     /**
      * Remember the classname and the ID for the given $dbField
      * @param DBField $dbField
@@ -9,12 +11,14 @@ class FrontendEditing {
      * @param null $record
      */
     public static function setValue(DBField $dbField, $value, $record = null) {
-        if (Controller::curr() instanceof Page_Controller && Permission::check('ADMIN')) {
-            if ($record && is_object($record) && $dbField->getName()) {
-                $dbField->makeEditable  = true;
-                $dbField->editClassName = $record->ClassName;
-                $dbField->editID        = $record->ID;
-            }
+        $canEdit = (Controller::curr() instanceof Page_Controller && Permission::check('ADMIN'));
+        if (!$canEdit) {
+            $canEdit = is_object($record) && method_exists($record, 'canEdit') && $record->canEdit();
+        }
+        if ($canEdit && $record && is_object($record) && $dbField->getName()) {
+            $dbField->makeEditable  = true;
+            $dbField->editClassName = $record->ClassName;
+            $dbField->editID        = $record->ID;
         }
     }
 
@@ -46,7 +50,7 @@ class FrontendEditing {
     }
 
     public static function editingEnabled() {
-        return (Cookie::get('editmode') !== 'false') && !Controller::curr()->getRequest()->offsetExists('stage');
+        return FrontendEditing::$ForceEditable || ( (Cookie::get('editmode') !== 'false') && !Controller::curr()->getRequest()->offsetExists('stage'));
     }
 
 }
