@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Description of FrontEndEnum
+ * Description of FrontEndBoolean
  *
  * @author corey
  */
-class FrontEndEnum extends Enum {
+class FrontEndBoolean extends Boolean {
 
     /**
      * Set the value on the field.
@@ -28,11 +28,13 @@ class FrontEndEnum extends Enum {
         $isEditable = FrontendEditing::editingEnabled() && FrontendEditing::isEditable($this);
         $value      = parent::forTemplate();
         if ($isEditable) {
-            $field = $this->formField(null, null, false, $value)->
+            $field = $this->scaffoldSearchField($value)->
                     setAttribute('data-feclass', FrontendEditing::getClassName($this))->
                     setAttribute('data-feid', FrontendEditing::getID($this))->
                     setAttribute('data-fefield', $this->name)->
-                    addExtraClass("frontend-editable frontend-editable-enum");
+                    setHasEmptyDefault(false)->
+                    addExtraClass("frontend-editable frontend-editable-boolean")->
+                    setValue($value);
             $value = $field->forTemplate();
         }
         return $value;

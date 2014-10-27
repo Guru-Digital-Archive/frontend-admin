@@ -147,4 +147,6 @@ var frontEndAdmin = frontEndAdmin || {};
             this.tinymce(frontEndAdmin.tinymceDefaults);
         }});
     $(".frontend-editable-enum").entwine({onchange: saveFromSelect});
+    $(".frontend-editable-boolean").entwine({onchange: saveFromSelect});
+
 })(jQuery);
