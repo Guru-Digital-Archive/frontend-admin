@@ -75,7 +75,6 @@ var frontEndAdmin = frontEndAdmin || {};
         if (typeof (msg.type) !== "string") {
             msg.type = "info";
         }
-        console.log(msg.options);
         switch (msg.type) {
             case "good":
             case "success":
