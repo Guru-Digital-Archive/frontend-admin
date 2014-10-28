@@ -102,7 +102,13 @@ var frontEndAdmin = frontEndAdmin || {};
         return  result;
     }
 
-    frontEndAdmin.tinymceDefaults = {
+    frontEndAdmin.tinymceGlobalDefaults = {
+        inline: true,
+        save_enablewhendirty: false,
+        save_onsavecallback: saveFromEditor,
+        script_url: frontEndAdmin.baseHref + "silverstripe-frontend-admin/javascript/thirdparty/tinymce/js/tinymce/tinymce.min.js"
+    };
+    frontEndAdmin.tinymceDefaults = $.extend({}, frontEndAdmin.tinymceGlobalDefaults, {
         plugins: [
             "save advlist autolink lists image charmap print preview hr anchor pagebreak",
             "searchreplace wordcount visualblocks visualchars code fullscreen",
@@ -112,34 +118,29 @@ var frontEndAdmin = frontEndAdmin || {};
         toolbar1: "save undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ssfeLink ssfeimage",
         toolbar2: "print preview media | forecolor backcolor emoticons",
         contextmenu: "ssfeLink ssfeimage inserttable | cell row column deletetable",
-        inline: true,
         image_advtab: true,
         remove_script_host: true,
         convert_urls: true,
         relative_urls: true,
         document_base_url: frontEndAdmin.baseHref,
-        extended_valid_elements: "-p[style|class]",
+        extended_valid_elements: "-p[style|class]"
 //            content_css: frontEndAdmin.settings.cssFiles.join(),
 //            font_formats: frontEndAdmin.settings.wysiswgFontFormats,
 //            fontsize_formats: frontEndAdmin.settings.wysiswgFontSizes,
 //            style_formats: frontEndAdmin.settings.wysiswgStyles,
 //            formats: frontEndAdmin.settings.wysiswgFormats,
 //            templates: frontEndAdmin.settings.linkBase + "tinymcetemplates.json",
-        save_enablewhendirty: false,
-        save_onsavecallback: saveFromEditor
-    };
-    frontEndAdmin.tinymceVarCharDefaults = {
+    });
+    frontEndAdmin.tinymceVarCharDefaults = $.extend({}, frontEndAdmin.tinymceGlobalDefaults, {
         plugins: [
             "save "
         ],
         toolbar1: "save cancel undo redo ",
         menubar: false,
         statusbar: false,
-        toolbar_items_size: "small",
-        inline: true,
-        save_enablewhendirty: false,
-        save_onsavecallback: saveFromEditor
-    };
+        toolbar_items_size: "small"
+    });
+
     $(".frontend-editable-varchar").entwine({onmatch: function () {
             this.tinymce(frontEndAdmin.tinymceVarCharDefaults);
         }});

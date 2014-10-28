@@ -38,10 +38,7 @@ class FrontendEditingControllerExtension extends Extension {
             Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-admin.css');
         }
         if (FrontendEditing::editingEnabled() && $page->canEdit()) {
-            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/jquery.jeditable.js');
-            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/tinymce.min.js');
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/jquery.tinymce.min.js');
-            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce_ssfebuttons/tinymce_ssfebuttons.js');
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditor.js');
             Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor.css');
         }
@@ -133,10 +130,7 @@ class FrontendEditingControllerExtension extends Extension {
 
     public function AddEditingIncludes() {
         Requirements::javascriptTemplate(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdminTemplate.js', $this->getConfig());
-        Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/jquery.jeditable.js');
-        Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/tinymce.min.js');
         Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/jquery.tinymce.min.js');
-        Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce_ssfebuttons/tinymce_ssfebuttons.js');
         Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditor.js');
         Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor.css');
     }

@@ -1,11 +1,3 @@
-/*
- *  Silverstripe front end admin  - v0.1
- *  Front end admin for Silverstripe
- *  
- *
- *  Made by Corey Sewell - Guru Digital Media
- *  Under BSD-3-Clause License
- */
 (function($) {
     tinymce.PluginManager.add("SSFEButtons", function(editor) {
         function showLinkDialog() {
