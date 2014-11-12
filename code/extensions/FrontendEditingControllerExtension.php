@@ -17,9 +17,9 @@ class FrontendEditingControllerExtension extends Extension {
         /* @var $controller Page_Controller */
         $controller = $this->owner;
         /* @var $page Page */
-        $page       = $controller->data();
-        $editable   = FrontendEditing::editingEnabled() && $page->canEdit();
-        $admin      = Permission::check('ADMIN');
+        $page = $controller->data();
+        $editable = FrontendEditing::editingEnabled() && $page->canEdit();
+        $admin = Permission::check('ADMIN');
         if ($editable || $admin) {
 
             //Flexslider imports easing, which breaks?
@@ -49,29 +49,34 @@ class FrontendEditingControllerExtension extends Extension {
      * @return bool
      */
     public function fesave() {
-        $response          = new stdClass();
+        $response = new stdClass();
         $response->content = "An unknown error has occured";
-        $response->type    = "bad";
+        $response->type = "bad";
 
         /* @var $controller Controller */
-        $controller  = Controller::curr();
-        $feclass     = $controller->getRequest()->postVar('feclass');
-        $fefield     = $controller->getRequest()->postVar('fefield');
-        $feid        = $controller->getRequest()->postVar('feid');
-        $value       = $controller->getRequest()->postVar('value');
+        $controller = Controller::curr();
+        $feclass = $controller->getRequest()->postVar('feclass');
+        $fefield = $controller->getRequest()->postVar('fefield');
+        $feid = $controller->getRequest()->postVar('feid');
+        $value = $controller->getRequest()->postVar('value');
         $isVersioned = $feclass::has_extension('Versioned');
-        $result      = false;
+        $result = false;
         if (class_exists($feclass)) {
             $record = $isVersioned ? Versioned::get_by_stage($feclass, 'Live')->byID($feid) : DataObject::get_by_id($feclass, $feid);
             if (is_object($record)) {
-                $canEdit    = Permission::check('ADMIN') || method_exists($record, 'canEdit') && $record->canEdit();
+                $canEdit = Permission::check('ADMIN') || method_exists($record, 'canEdit') && $record->canEdit();
                 $canPublish = Permission::check('ADMIN') || method_exists($record, 'canPublish') && $record->canPublish();
                 if ($canEdit) {
                     $record->$fefield = $value;
                     if ($isVersioned) {
                         $result = $record->writeToStage('Stage');
                         if ($canPublish) {
-                            $result = $record->publish('Stage', 'Live');
+                            $record->publish('Stage', 'Live');
+                            $lastError = error_get_last();
+                            if (!is_null($lastError) && $lastError["type"] == E_USER_WARNING) {
+                                $result=false;
+                                $response->content = $lastError["message"];
+                            }
                         }
                     } else {
                         $result = $record->write();
@@ -87,9 +92,9 @@ class FrontendEditingControllerExtension extends Extension {
         }
 
         if ($result) {
-            $result            = $value;
+            $result = $value;
             $response->content = $fefield . " saved successfully";
-            $response->type    = "good";
+            $response->type = "good";
         }
         if ($controller->getRequest()->isAjax()) {
             $controller->getResponse()->addHeader('Content-type', 'application/json');
@@ -101,27 +106,27 @@ class FrontendEditingControllerExtension extends Extension {
     }
 
     public function getConfig($page = null) {
-        $themeDir      = $this->owner->ThemeDir();
-        $baseDir       = Director::baseURL();
-        $baseHref      = Director::protocolAndHost() . $baseDir;
-        $editHref      = ($page) ? $baseHref . $page->CMSEditLink() : null;
+        $themeDir = $this->owner->ThemeDir();
+        $baseDir = Director::baseURL();
+        $baseHref = Director::protocolAndHost() . $baseDir;
+        $editHref = ($page) ? $baseHref . $page->CMSEditLink() : null;
         $pageHierarchy = array();
         if ($page) {
             $pageHierarchy = array($page->ID);
-            $parent        = $page->Parent();
+            $parent = $page->Parent();
             while ($parent && $parent->exists()) {
                 $pageHierarchy[] = $parent->ID;
-                $parent          = $parent->Parent();
+                $parent = $parent->Parent();
             }
         }
 //        FrontEndEditorToolbar/LinkForm
         $jsConfig = array(
-            'linkURL'       => Controller::join_links(FrontEndEditorToolbar::create()->Link(), "LinkForm"),
-            'mediaURL'      => Controller::join_links(FrontEndEditorToolbar::create()->Link(), "MediaForm"),
-            'themeDir'      => $themeDir,
-            'baseDir'       => $baseDir,
-            'baseHref'      => $baseHref,
-            'editHref'      => $editHref,
+            'linkURL' => Controller::join_links(FrontEndEditorToolbar::create()->Link(), "LinkForm"),
+            'mediaURL' => Controller::join_links(FrontEndEditorToolbar::create()->Link(), "MediaForm"),
+            'themeDir' => $themeDir,
+            'baseDir' => $baseDir,
+            'baseHref' => $baseHref,
+            'editHref' => $editHref,
             'pageHierarchy' => Convert::raw2json(array_reverse($pageHierarchy))
         );
 
