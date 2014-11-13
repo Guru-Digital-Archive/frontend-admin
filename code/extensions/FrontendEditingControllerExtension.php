@@ -192,6 +192,11 @@ class FrontEndEditItem extends Object {
                 $result = $record->writeToStage('Stage');
                 if ($this->canPublish()) {
                     $record->publish('Stage', 'Live');
+                    $lastError = error_get_last();
+                    if (!is_null($lastError) && $lastError["type"] == E_USER_WARNING) {
+                        $result=false;
+                        $response->content = $lastError["message"];
+                    }
                 }
             } else {
                 $result = $record->write();
