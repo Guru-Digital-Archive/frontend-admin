@@ -19,9 +19,7 @@ class FrontendEditingControllerExtension extends Extension {
         /* @var $page Page */
         $page       = $controller->data();
         $editable   = FrontendEditing::editingEnabled() && $page->canEdit();
-        $admin      = Permission::check('ADMIN');
-        if ($editable || $admin) {
-
+        if ($editable || Permission::check('ADMIN')) {
             //Flexslider imports easing, which breaks?
             Requirements::block('flexslider/javascript/jquery.easing.1.3.js');
 
@@ -33,11 +31,11 @@ class FrontendEditingControllerExtension extends Extension {
             Requirements::css(FRAMEWORK_DIR . '/thirdparty/jquery-ui-themes/smoothness/jquery-ui.css');
         }
 
-        if ($admin && !Controller::curr()->getRequest()->offsetExists('stage')) {
+        if (Permission::check('ADMIN') && !Controller::curr()->getRequest()->offsetExists('stage')) {
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdmin.js');
             Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-admin.css');
         }
-        if (FrontendEditing::editingEnabled() && $page->canEdit()) {
+        if ($editable) {
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/jquery.tinymce.min.js');
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditor.js');
             Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor.css');
@@ -49,53 +47,31 @@ class FrontendEditingControllerExtension extends Extension {
      * @return bool
      */
     public function fesave() {
-        $response          = new stdClass();
-        $response->content = "An unknown error has occured";
-        $response->type    = "bad";
-
-        /* @var $controller Controller */
-        $controller  = Controller::curr();
-        $feclass     = $controller->getRequest()->postVar('feclass');
-        $fefield     = $controller->getRequest()->postVar('fefield');
-        $feid        = $controller->getRequest()->postVar('feid');
-        $value       = $controller->getRequest()->postVar('value');
-        $isVersioned = $feclass::has_extension('Versioned');
-        $result      = false;
-        if (class_exists($feclass)) {
-            $record = $isVersioned ? Versioned::get_by_stage($feclass, 'Live')->byID($feid) : DataObject::get_by_id($feclass, $feid);
-            if (is_object($record)) {
-                $canEdit    = Permission::check('ADMIN') || method_exists($record, 'canEdit') && $record->canEdit();
-                $canPublish = Permission::check('ADMIN') || method_exists($record, 'canPublish') && $record->canPublish();
-                if ($canEdit) {
-                    $record->$fefield = $value;
-                    if ($isVersioned) {
-                        $result = $record->writeToStage('Stage');
-                        if ($canPublish) {
-                            $result = $record->publish('Stage', 'Live');
-                        }
-                    } else {
-                        $result = $record->write();
-                    }
+        $response        = StatusMessage::create("An unknown error has occured", StatusMessageTypes::DANGER);
+        $response->model = new stdClass();
+        $item            = FrontEndEditItem::createFromRequest();
+        if ($item->exists()) {
+            $record = $item->getRecord();
+            if ($item->canEdit()) {
+                if ($item->saveValue()) {
+                    $response->setContent($item->field . " saved ")->setType(StatusMessageTypes::SUCCESS);
+                    $response->model = $record->toMap();
                 } else {
-                    $response->content = "You do not have permision to edit this item";
+                    $response->setContent("Error occurred while trying to save " . $item->field)->setType(StatusMessageTypes::DANGER);
                 }
             } else {
-                $response->content = "Unable to fetch " . $feclass . " with id " . $feid;
+                $response->setContent("You do not have permision to edit this item " . $item->field)->setType(StatusMessageTypes::DANGER);
             }
         } else {
-            $response->content = "Unable to find class " . $feclass;
+            $response->setContent("Unable to locate " . $item->class . " with id " . $item->id)->setType(StatusMessageTypes::DANGER);
         }
-
-        if ($result) {
-            $result            = $value;
-            $response->content = $fefield . " saved successfully";
-            $response->type    = "good";
-        }
+        /* @var $controller Controller */
+        $controller = Controller::curr();
         if ($controller->getRequest()->isAjax()) {
             $controller->getResponse()->addHeader('Content-type', 'application/json');
             $response = Convert::raw2json($response);
         } else {
-            $response = array("message" => $response->content);
+            $response = array("StatusMessage" => $response);
         }
         return $response;
     }
@@ -133,6 +109,95 @@ class FrontendEditingControllerExtension extends Extension {
         Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/jquery.tinymce.min.js');
         Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditor.js');
         Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor.css');
+    }
+
+}
+
+class FrontEndEditItem extends Object {
+
+    public $class;
+    public $field;
+    public $id;
+    public $value;
+    private $record;
+
+    /**
+     *
+     * @param SS_HTTPRequest $request
+     * @return FrontEndEditItem
+     */
+    public static function createFromRequest(SS_HTTPRequest $request = null) {
+        if (is_null($request)) {
+            $request = Controller::curr()->getRequest();
+        }
+        return self::create($request->postVar('feclass'), $request->postVar('fefield'), $request->postVar('feid'), $request->postVar('value'));
+    }
+
+    /**
+     *
+     * @param string $class
+     * @param string $field
+     * @param int $id
+     * @param string $value
+     */
+    public function __construct($class, $field, $id, $value) {
+        parent::__construct();
+        $this->class = $class;
+        $this->field = $field;
+        $this->id    = $id;
+        $this->value = $value;
+    }
+
+    public function exists() {
+        return
+                parent::exists() &&
+                class_exists($this->class) &&
+                is_object($this->getRecord());
+    }
+
+    public function isVersioned() {
+        return
+                class_exists($this->class) &&
+                method_exists($this->class, 'has_extension') &&
+                forward_static_call(array($this->class, 'has_extension'), 'Versioned');
+    }
+
+    /**
+     *
+     * @return DataObject|Versioned
+     */
+    public function getRecord() {
+        if (!$this->record) {
+            $this->record = $this->isVersioned() ?
+                    Versioned::get_by_stage($this->class, 'Live')->byID($this->id) :
+                    DataObject::get_by_id($this->class, $this->id);
+        }
+        return $this->record;
+    }
+
+    public function canEdit() {
+        return Permission::check('ADMIN') || method_exists($this->getRecord(), 'canEdit') && $this->getRecord()->canEdit();
+    }
+
+    public function canPublish() {
+        return Permission::check('ADMIN') || method_exists($this->getRecord(), 'canPublish') && $this->getRecord()->canPublish();
+    }
+
+    public function saveValue() {
+        $result = false;
+        if ($this->exists()) {
+            $record = $this->getRecord();
+            $record->setField($this->field, $this->value);
+            if ($this->isVersioned()) {
+                $result = $record->writeToStage('Stage');
+                if ($this->canPublish()) {
+                    $record->publish('Stage', 'Live');
+                }
+            } else {
+                $result = $record->write();
+            }
+        }
+        return $result;
     }
 
 }
