@@ -16,7 +16,8 @@
     },
     "require": {
         "silverstripe/cms": ">=3.0.1,<3.2",
-        "composer/installers": "*"
+        "composer/installers": "*",
+        "gdmedia/silverstripe-status-message": "dev-master"
     },
     "extra": {
         "installer-name": "silverstripe-frontend-admin",

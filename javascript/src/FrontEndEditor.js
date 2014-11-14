@@ -61,14 +61,13 @@ var frontEndAdmin = frontEndAdmin || {};
         var onBeforeSaveEvent = $.Event("FrontEndEditor:onBeforeSave"), loadingMsg, callbacks;
         $(document).trigger(onBeforeSaveEvent, [toPost, $element]);
         if (!onBeforeSaveEvent.isDefaultPrevented()) {
-            loadingMsg = showMessage({content: "Saving " + toPost.fefield + "", type: "loading"});
-            showMessage(toPost);
+            loadingMsg = SS_StatusMessage.loading("Saving " + toPost.fefield, "Saving", {iconClass: "fe-loading"});
             callbacks = $.Callbacks();
             if ($.isFunction(callback)) {
                 callbacks.add(callback);
             }
             callbacks.add(function (response) {
-                showMessage(response);
+                SS_StatusMessage.create(response.content, SS_StatusMessageTypes.fromForm(response.type), response.title, response.options);
             });
 
             $.post(frontEndAdmin.baseHref + "home/fesave", toPost).done(function (response) {
@@ -84,43 +83,43 @@ var frontEndAdmin = frontEndAdmin || {};
             });
         }
     }
-    function showMessage(msg) {
-        var result;
-        if (typeof (msg) === "string") {
-            msg = {content: msg};
-        }
-        if (typeof (msg.content) !== "string") {
-            return;
-        }
-        if (typeof (msg.type) !== "string") {
-            msg.type = "info";
-        }
-        switch (msg.type) {
-            case "good":
-            case "success":
-                result = toastr.success(msg.content, msg.title, msg.options);
-                break;
-
-            case "bad":
-            case "error":
-                result = toastr.error(msg.content, msg.title, msg.options);
-                break;
-
-            case "warning":
-            case "warn":
-                result = toastr.warning(msg.content, msg.title, msg.options);
-                break;
-
-            case "loading":
-                msg.options = {extendedTimeOut: 0, timeOut: 0, iconClass: "toast-info toast-icon-loading"};
-                result = toastr.warning(msg.content, msg.title, msg.options);
-                break;
-
-            default:
-                result = toastr.info(msg.content, msg.title, msg.options);
-        }
-        return  result;
-    }
+//    function showMessage1(msg) {
+//        var result;
+//        if (typeof (msg) === "string") {
+//            msg = {content: msg};
+//        }
+//        if (typeof (msg.content) !== "string") {
+//            return;
+//        }
+//        if (typeof (msg.type) !== "string") {
+//            msg.type = "info";
+//        }
+//        switch (msg.type) {
+//            case "good":
+//            case "success":
+//                result = SS_StatusMessage.success(msg.content, msg.title, msg.options);
+//                break;
+//
+//            case "bad":
+//            case "error":
+//                result = SS_StatusMessage.error(msg.content, msg.title, msg.options);
+//                break;
+//
+//            case "warning":
+//            case "warn":
+//                result = SS_StatusMessage.warning(msg.content, msg.title, msg.options);
+//                break;
+//
+//            case "loading":
+////                msg.options = {extendedTimeOut: 0, timeOut: 0, iconClass: "toast-info toast-icon-loading"};
+//                result = SS_StatusMessage.loading(msg.content, msg.title, msg.options);
+//                break;
+//
+//            default:
+//                result = SS_StatusMessage.info(msg.content, msg.title, msg.options);
+//        }
+//        return  result;
+//    }
 
     frontEndAdmin.tinymceGlobalDefaults = {
         inline: true,
