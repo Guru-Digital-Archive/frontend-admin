@@ -61,7 +61,7 @@ var frontEndAdmin = frontEndAdmin || {};
         var onBeforeSaveEvent = $.Event("FrontEndEditor:onBeforeSave"), loadingMsg, callbacks;
         $(document).trigger(onBeforeSaveEvent, [toPost, $element]);
         if (!onBeforeSaveEvent.isDefaultPrevented()) {
-            loadingMsg = SS_StatusMessage.loading("Saving " + toPost.fefield, "Saving", {iconClass: "fe-loading"});
+            loadingMsg = SS_StatusMessage.loading("Saving " + toPost.fefield, "Saving", {sticky: true});
             callbacks = $.Callbacks();
             if ($.isFunction(callback)) {
                 callbacks.add(callback);
