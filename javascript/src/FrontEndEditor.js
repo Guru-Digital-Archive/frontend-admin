@@ -76,8 +76,8 @@ var frontEndAdmin = frontEndAdmin || {};
                 if (!onAfterSaveEvent.isDefaultPrevented()) {
                     callbacks.fire(response, $element);
                 }
-            }).fail(function () {
-                showMessage({content: "Unexpected error occurred", type: "bad"});
+            }).fail(function (e) {
+                SS_StatusMessage.danger("Unexpected error occurred<br/>" + e.responseText, "error");
             }).always(function () {
                 loadingMsg.hide();
             });

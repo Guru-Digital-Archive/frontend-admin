@@ -69,7 +69,7 @@ var frontEndAdmin = frontEndAdmin || {};
         var onBeforeSaveEvent = $.Event("FrontEndEditor:onBeforeSave"), loadingMsg, callbacks;
         $(document).trigger(onBeforeSaveEvent, [toPost, $element]);
         if (!onBeforeSaveEvent.isDefaultPrevented()) {
-            loadingMsg = SS_StatusMessage.loading("Saving " + toPost.fefield, "Saving", {iconClass: "fe-loading", sticky: true});
+            loadingMsg = SS_StatusMessage.loading("Saving " + toPost.fefield, "Saving", {iconClass: "fe-loading"});
             callbacks = $.Callbacks();
             if ($.isFunction(callback)) {
                 callbacks.add(callback);
@@ -84,8 +84,9 @@ var frontEndAdmin = frontEndAdmin || {};
                 if (!onAfterSaveEvent.isDefaultPrevented()) {
                     callbacks.fire(response, $element);
                 }
-            }).fail(function () {
-                showMessage({content: "Unexpected error occurred", type: "bad"});
+            }).fail(function (e) {
+                console.log(e);
+                SS_StatusMessage.danger("Unexpected error occurred", "error");
             }).always(function () {
                 loadingMsg.hide();
             });
