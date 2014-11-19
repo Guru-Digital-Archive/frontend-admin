@@ -6,7 +6,7 @@ You can edit HTMLText db objects and Varchar db objects in the frontend.
 A flyout menu containing the cms admin is also injected into the front end, so you can make changes in admin without leaving the front end.
 
 ##Requirements
-* SilverStripe 3.x
+* [SilverStripe 3.x](http://www.silverstripe.org/software/download/)
 
 ##Installation
 >###Composer

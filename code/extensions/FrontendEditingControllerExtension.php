@@ -6,7 +6,7 @@
 class FrontendEditingControllerExtension extends Extension {
 
     private static $allowed_actions = array(
-        'fesave'
+        'fesave', 'feFileUploadForm'
     );
 
     /**
@@ -111,6 +111,24 @@ class FrontendEditingControllerExtension extends Extension {
         Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor.css');
     }
 
+    public function feFileUploadForm(SS_HTTPRequest $request) {
+        $feclass     = $request->getVar('feclass');
+        $fefield     = $request->getVar('fefield');
+        $feid        = $request->getVar('feid');
+        $filesUpload = $request->getVar('filesUpload');
+        $fefileid    = $request->getVar('fefileid');
+        $fefileclass = $request->getVar('fefileclass');
+        $res         = false;
+        echo '<pre class="debug">' . PHP_EOL . __FILE__ . "::" . __LINE__ . PHP_EOL . '</pre>';
+        if ($filesUpload == 1 && class_exists($fefileclass) && class_exists($feclass)) {
+            echo '<pre class="debug">' . PHP_EOL . __FILE__ . "::" . __LINE__ . PHP_EOL . '</pre>';
+            $file = $fefileid ? $fefileclass::get()->byId($fefileid) : $fefileclass::create();
+            $res  = FrontendEditing::getUploadForm($file, $feclass, $feid, $fefield);
+        }
+        echo '<pre class="debug"> "$res"' . PHP_EOL . print_r($res, true) . PHP_EOL . '</pre>';
+        return $res;
+    }
+
 }
 
 class FrontEndEditItem extends Object {
@@ -130,7 +148,12 @@ class FrontEndEditItem extends Object {
         if (is_null($request)) {
             $request = Controller::curr()->getRequest();
         }
-        return self::create($request->postVar('feclass'), $request->postVar('fefield'), $request->postVar('feid'), $request->postVar('value'));
+        $value = $request->postVar('value');
+        if ($request->postVar('feisUpload') == "true") {
+            $value = json_decode($value);
+        }
+
+        return self::create($request->postVar('feclass'), $request->postVar('fefield'), $request->postVar('feid'), $value);
     }
 
     /**
@@ -185,6 +208,7 @@ class FrontEndEditItem extends Object {
 
     public function saveValue() {
         $result = false;
+//        return true;
         if ($this->exists()) {
             $record = $this->getRecord();
             $record->setField($this->field, $this->value);
@@ -194,8 +218,8 @@ class FrontEndEditItem extends Object {
                     $record->publish('Stage', 'Live');
                     $lastError = error_get_last();
                     if (!is_null($lastError) && $lastError["type"] == E_USER_WARNING) {
-                        $result=false;
-                        $response->content = $lastError["message"];
+                        $result = false;
+//                        $response->content = $lastError["message"];
                     }
                 }
             } else {
