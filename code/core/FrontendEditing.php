@@ -72,4 +72,39 @@ class FrontendEditing {
         }
     }
 
+    public static function getUploadForm($file, $parentClass, $parentId, $parentField) {
+        if ($file instanceof File && class_exists($parentClass) && is_subclass_of($parentClass, "DataObject")) {
+            $parent                           = $parentClass::get()->byId($parentId);
+            $fields                           = new FieldList(
+                    $uploadField                      = new UploadField($parentField, 'Upload', $parent)
+            );
+            $uploadField->setCanAttachExisting(false); // Block access to Silverstripe assets library
+            $uploadField->setCanPreviewFolder(false); // Don't show target filesystem folder on upload field
+            $uploadField->relationAutoSetting = false; // Prevents the form thinking the GalleryPage is the underlying object
+            $uploadField->setFolderName('Address Book');
+            $uploadField->setAllowedMaxFileNumber(1);
+            if ($file instanceof Image) {
+                $uploadField->setAllowedFileCategories('image');
+            }
+            $actions = new FieldList(new FormAction('submit', 'Save'));
+            $from    = new Form(Controller::curr(), 'feFileUploadForm', $fields, $actions, null);
+            $urlParams    = array(
+                'feclass'     => $parentClass,
+                'fefield'     => $parentField,
+                'feid'        => $parentId,
+                'filesUpload' => true,
+                'fefileid'    => $file->ID,
+                'fefileclass' => $file->ClassName
+            );
+//   feclass: parentClass,
+//                        fefield: parentField,
+//                        feid: parentId,
+//                        feisUpload: true,
+//                        value: "{feclass: " + objClass + ",feid: " + objId + "}"
+//            echo http_build_query($urlParams) . "\n";
+            $from->setFormAction('home/feFileUploadForm?'.http_build_query($urlParams) );
+            return $from;
+        }
+    }
+
 }
