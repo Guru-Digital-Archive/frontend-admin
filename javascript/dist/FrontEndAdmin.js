@@ -75,8 +75,9 @@
 
     $(function () {
         var cmsUrl = $("meta[name='x-cms-edit-link']").attr("content");
-        window.jQuery.fn.bootstrapBtn = window.jQuery.fn.button.noConflict();
-
+        if (typeof window.jQuery.fn.button.noConflict === "function") {
+            window.jQuery.fn.bootstrapBtn = window.jQuery.fn.button.noConflict();
+        }
         $.entwine("ss.frontEndAdmin", function ($) {
             $("div.admin-panel").entwine({
                 OpenPosition: 0,
