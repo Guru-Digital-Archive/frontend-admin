@@ -9,11 +9,6 @@
 var frontEndAdmin = frontEndAdmin || {};
 (function ($) {
     frontEndAdmin.baseHref = $("base").attr("href");
-//    $(function () {
-//        if (typeof toastr === "undefined") {
-//            $.getScript(frontEndAdmin.baseHref + "silverstripe-frontend-admin/javascript/thirdparty/toastr.min.js");
-//        }
-//    });
     //Title fix, detect html
     if ($("title").text().search("<") !== -1) {
         var originalTitle = $($("title").text());
