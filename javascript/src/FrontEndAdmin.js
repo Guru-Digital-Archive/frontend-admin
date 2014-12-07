@@ -67,7 +67,7 @@
 
     $(function () {
         var cmsUrl = $("meta[name='x-cms-edit-link']").attr("content");
-        if (typeof window.jQuery.fn.button.noConflict === "function") {
+        if (typeof window.jQuery.fn.button !== "undefined" && typeof window.jQuery.fn.button.noConflict === "function") {
             window.jQuery.fn.bootstrapBtn = window.jQuery.fn.button.noConflict();
         }
 
