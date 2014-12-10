@@ -15,11 +15,13 @@ class FrontendEditingControllerExtension extends Extension {
      */
     public function onBeforeInit() {
         /* @var $controller Page_Controller */
-        $controller = $this->owner;
+        $controller     = $this->owner;
         /* @var $page Page */
-        $page       = $controller->data();
-        $editable   = FrontendEditing::editingEnabled() && $page->canEdit();
-        if ($editable || Permission::check('ADMIN')) {
+        $page           = $controller->data();
+        $canEdit        = $page->canEdit() && !Controller::curr()->getRequest()->offsetExists('stage');
+        $editingEnabled = FrontendEditing::editingEnabled();
+
+        if ($canEdit) {
             //Flexslider imports easing, which breaks?
             Requirements::block('flexslider/javascript/jquery.easing.1.3.js');
 
@@ -29,13 +31,10 @@ class FrontendEditingControllerExtension extends Extension {
             Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
             Requirements::javascriptTemplate(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdminTemplate.js', $this->getConfig($page));
             Requirements::css(FRAMEWORK_DIR . '/thirdparty/jquery-ui-themes/smoothness/jquery-ui.css');
-        }
-
-        if ($editable && !Controller::curr()->getRequest()->offsetExists('stage')) {
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdmin.js');
             Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-admin.css');
         }
-        if ($editable) {
+        if ($editingEnabled) {
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/jquery.tinymce.min.js');
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditor.js');
             Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor.css');

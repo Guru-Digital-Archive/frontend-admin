@@ -12,7 +12,7 @@ class FrontendEditing {
      * @param null $record
      */
     public static function setValue(DBField $dbField, $value, $record = null) {
-        $canEdit = (Controller::curr() instanceof Page_Controller && Permission::check('ADMIN'));
+        $canEdit = (Controller::curr() instanceof Page_Controller && Controller::curr()->data()->canEdit());
         if (!$canEdit) {
             $canEdit = is_object($record) && in_array(get_class($record), self::$EditableClasses) && method_exists($record, 'canEdit') && $record->canEdit();
         }
@@ -86,9 +86,9 @@ class FrontendEditing {
             if ($file instanceof Image) {
                 $uploadField->setAllowedFileCategories('image');
             }
-            $actions = new FieldList(new FormAction('submit', 'Save'));
-            $from    = new Form(Controller::curr(), 'feFileUploadForm', $fields, $actions, null);
-            $urlParams    = array(
+            $actions   = new FieldList(new FormAction('submit', 'Save'));
+            $from      = new Form(Controller::curr(), 'feFileUploadForm', $fields, $actions, null);
+            $urlParams = array(
                 'feclass'     => $parentClass,
                 'fefield'     => $parentField,
                 'feid'        => $parentId,
@@ -102,7 +102,7 @@ class FrontendEditing {
 //                        feisUpload: true,
 //                        value: "{feclass: " + objClass + ",feid: " + objId + "}"
 //            echo http_build_query($urlParams) . "\n";
-            $from->setFormAction('home/feFileUploadForm?'.http_build_query($urlParams) );
+            $from->setFormAction('home/feFileUploadForm?' . http_build_query($urlParams));
             return $from;
         }
     }
