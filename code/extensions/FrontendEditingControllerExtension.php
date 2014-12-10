@@ -31,7 +31,7 @@ class FrontendEditingControllerExtension extends Extension {
             Requirements::css(FRAMEWORK_DIR . '/thirdparty/jquery-ui-themes/smoothness/jquery-ui.css');
         }
 
-        if (Permission::check('ADMIN') && !Controller::curr()->getRequest()->offsetExists('stage')) {
+        if ($editable && !Controller::curr()->getRequest()->offsetExists('stage')) {
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdmin.js');
             Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-admin.css');
         }
