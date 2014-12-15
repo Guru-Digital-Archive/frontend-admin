@@ -22,7 +22,9 @@ class FrontendEditingControllerExtension extends Extension {
         $editingEnabled = FrontendEditing::editingEnabled();
 
         if ($canEdit) {
+            // Enable front-end fly-out menu
             //Flexslider imports easing, which breaks?
+
             Requirements::block('flexslider/javascript/jquery.easing.1.3.js');
 
             Requirements::javascript(FRAMEWORK_DIR . '/thirdparty/jquery/jquery.js');
@@ -34,7 +36,9 @@ class FrontendEditingControllerExtension extends Extension {
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdmin.js');
             Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-admin.css');
         }
-        if ($editingEnabled) {
+        if ($canEdit && $editingEnabled) {
+            // Enable TinyMCE when editing has been enabled
+
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/jquery.tinymce.min.js');
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditor.js');
             Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor.css');
