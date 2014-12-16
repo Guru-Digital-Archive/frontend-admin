@@ -300,18 +300,14 @@
                         // Make the logout link affect the top most window
                         f$(".logout-link").attr("target", "_top");
 
-                        // Set the X-REMOVE-CONTENT for all ajax requests in the admin panel iframe
+                        // Append frontEndAdmin=true to URLs for all ajax requests in the admin panel iframe
                         // This ensures saving a page does not overwrite content
-                        f$.ajaxSetup({
-                            beforeSend: function (xmlhttp) {
-                                xmlhttp.setRequestHeader("X-FRONT-END-ADMIN", "true");
+                        f$("div.cms-container").entwine({
+                            onbeforestatechange: function (e, data) {
+                                data.state.url = data.state.url + (data.state.url.split("?")[1] ? "&" : "?") + "frontEndAdmin=true";
                             }
                         });
-//                        $(fDocument).ajaxComplete(function(event, xhr, settings) {
-//                            if (settings.url == "admin/pages/treeview") {
-//                                var tree = f$(".jstree");
-//                            }
-//                        });
+
                     });
                 }
             });
