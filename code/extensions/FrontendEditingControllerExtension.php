@@ -37,8 +37,11 @@ class FrontendEditingControllerExtension extends Extension {
             Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-admin.css');
         }
         if ($canEdit && $editingEnabled) {
+            // Disable mode pagespeed while editing
+            $controller->getResponse()->addHeader("PageSpeed", "off");
+            // Disable HTTP cache while editing
+            HTTP::set_cache_age(86400);
             // Enable TinyMCE when editing has been enabled
-
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/jquery.tinymce.min.js');
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditor.js');
             Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor.css');
