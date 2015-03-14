@@ -1,10 +1,10 @@
 {
     "name": "gdmedia/silverstripe-frontend-admin",
     "description": "Front end admin for Silverstripe",
+    "license": "BSD-3-Clause",
     "type": "silverstripe-module",
     "homepage": "https://github.com/gurudigital/frontend-admin",
     "keywords": ["silverstripe", "edit", "editor", "admin", "frontend", "front-end"],
-    "license": "BSD-3-Clause",
     "authors": [
         {
             "name": "Corey Sewell - Guru Digital Media",

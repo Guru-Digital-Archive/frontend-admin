@@ -20,6 +20,7 @@ class FrontendEditingControllerExtension extends Extension {
         $page           = $controller->data();
         $canEdit        = $page->canEdit() && !Controller::curr()->getRequest()->offsetExists('stage');
         $editingEnabled = FrontendEditing::editingEnabled();
+        $jsMin = (Director::isDev()) ? "" : ".min";
 
         if ($canEdit) {
             // Enable front-end fly-out menu
@@ -31,9 +32,9 @@ class FrontendEditingControllerExtension extends Extension {
             Requirements::javascript(FRAMEWORK_DIR . '/thirdparty/jquery-ui/jquery-ui.js');
             Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/ssui.core.js');
             Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
-            Requirements::javascriptTemplate(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdminTemplate.js', $this->getConfig($page));
+            Requirements::javascriptTemplate(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdminTemplate'.$jsMin .'.js', $this->getConfig($page));
             Requirements::css(FRAMEWORK_DIR . '/thirdparty/jquery-ui-themes/smoothness/jquery-ui.css');
-            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdmin.js');
+            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdmin'.$jsMin .'.js');
             Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-admin.css');
         }
         if ($canEdit && $editingEnabled) {
@@ -42,8 +43,8 @@ class FrontendEditingControllerExtension extends Extension {
             // Disable HTTP cache while editing
             HTTP::set_cache_age(86400);
             // Enable TinyMCE when editing has been enabled
-            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/jquery.tinymce.min.js');
-            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditor.js');
+            Requirements::javascript(FRONTEND_ADMIN_DIR . '/bower_components/tinymce/jquery.tinymce.min.js');
+            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditor'.$jsMin .'.js');
             Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor.css');
         }
     }

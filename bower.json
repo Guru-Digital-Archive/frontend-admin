@@ -1,0 +1,22 @@
+{
+    "name": "gdm-silverstripe-frontend-admin",
+    "title": "Silverstripe front end admin ",
+    "description": "Front end admin for Silverstripe",
+    "license": "BSD-3-Clause",
+    "homepage": "https://github.com/guru-digital/frontend-admin",
+    "authors": [
+        "Corey Sewell <corey@gdmedia.tv>"
+    ],
+    "license": "MIT",
+    "private": true,
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "tinymce": "~4.1.9"
+    }
+}

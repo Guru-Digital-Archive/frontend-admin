@@ -26,7 +26,7 @@ class FrontEndEditorHtmlEditField extends TextareaField {
      * @var bool Should we check the valid_elements (& extended_valid_elements) rules from HtmlEditorConfig server side?
      */
     private static $sanitise_server_side = false;
-    protected $rows = 30;
+    protected $rows                      = 30;
 
     /**
      * Includes the JavaScript neccesary for this field to work using the {@link Requirements} system.
@@ -37,11 +37,12 @@ class FrontEndEditorHtmlEditField extends TextareaField {
         $configObj = HtmlEditorConfig::get_active();
 
         if (Config::inst()->get('HtmlEditorField', 'use_gzip')) {
-            $internalPlugins   = array();
+            $internalPlugins = array();
             foreach ($configObj->getPlugins() as $plugin => $path)
-                if (!$path)
+                if (!$path) {
                     $internalPlugins[] = $plugin;
-            $tag               = TinyMCE_Compressor::renderTag(array(
+                }
+            $tag = TinyMCE_Compressor::renderTag(array(
                         'url'       => THIRDPARTY_DIR . '/tinymce/tiny_mce_gzip.php',
                         'plugins'   => implode(',', $internalPlugins),
                         'themes'    => 'advanced',

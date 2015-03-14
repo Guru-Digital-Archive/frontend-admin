@@ -120,7 +120,10 @@ var frontEndAdmin = frontEndAdmin || {};
         inline: true,
         save_enablewhendirty: false,
         save_onsavecallback: saveFromEditor,
-        script_url: frontEndAdmin.baseHref + "silverstripe-frontend-admin/javascript/thirdparty/tinymce/js/tinymce/tinymce.min.js"
+        script_url: frontEndAdmin.baseHref + "silverstripe-frontend-admin/bower_components/tinymce/tinymce.min.js",
+        external_plugins: {
+            "SSFEButtons": frontEndAdmin.baseHref + "silverstripe-frontend-admin/javascript/dist/tinymce_ssfebuttons.min.js"
+        }
     };
     frontEndAdmin.tinymceDefaults = $.extend({}, frontEndAdmin.tinymceGlobalDefaults, {
         plugins: [
