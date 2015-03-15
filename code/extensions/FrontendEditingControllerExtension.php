@@ -20,32 +20,32 @@ class FrontendEditingControllerExtension extends Extension {
         $page           = $controller->data();
         $canEdit        = $page->canEdit() && !Controller::curr()->getRequest()->offsetExists('stage');
         $editingEnabled = FrontendEditing::editingEnabled();
-        $jsMin = (Director::isDev()) ? "" : ".min";
+        $minExt = (Director::isDev()) ? "" : ".min";
 
         if ($canEdit) {
             // Enable front-end fly-out menu
+            // 
             //Flexslider imports easing, which breaks?
-
             Requirements::block('flexslider/javascript/jquery.easing.1.3.js');
 
             Requirements::javascript(FRAMEWORK_DIR . '/thirdparty/jquery/jquery.js');
             Requirements::javascript(FRAMEWORK_DIR . '/thirdparty/jquery-ui/jquery-ui.js');
             Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/ssui.core.js');
             Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
-            Requirements::javascriptTemplate(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdminTemplate'.$jsMin .'.js', $this->getConfig($page));
+            Requirements::javascriptTemplate(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdminTemplate'.$minExt .'.js', $this->getConfig($page));
             Requirements::css(FRAMEWORK_DIR . '/thirdparty/jquery-ui-themes/smoothness/jquery-ui.css');
-            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdmin'.$jsMin .'.js');
-            Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-admin.css');
+            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdmin'.$minExt .'.js');
+            Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-admin'.$minExt .'.css');
         }
         if ($canEdit && $editingEnabled) {
             // Disable mode pagespeed while editing
             $controller->getResponse()->addHeader("PageSpeed", "off");
             // Disable HTTP cache while editing
-            HTTP::set_cache_age(86400);
+            HTTP::set_cache_age(0);
             // Enable TinyMCE when editing has been enabled
             Requirements::javascript(FRONTEND_ADMIN_DIR . '/bower_components/tinymce/jquery.tinymce.min.js');
-            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditor'.$jsMin .'.js');
-            Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor.css');
+            Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditor'.$minExt .'.js');
+            Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor'.$minExt .'.css');
         }
     }
 
@@ -89,15 +89,14 @@ class FrontendEditingControllerExtension extends Extension {
         $baseHref      = Director::protocolAndHost() . $baseDir;
         $editHref      = ($page) ? $baseHref . $page->CMSEditLink() : null;
         $pageHierarchy = array();
-        if ($page) {
-            $pageHierarchy = array($page->ID);
-            $parent        = $page->Parent();
-            while ($parent && $parent->exists()) {
-                $pageHierarchy[] = $parent->ID;
-                $parent          = $parent->Parent();
-            }
-        }
-//        FrontEndEditorToolbar/LinkForm
+//        if ($page) {
+//            $pageHierarchy = array($page->ID);
+//            $parent        = $page->Parent();
+//            while ($parent && $parent->exists()) {
+//                $pageHierarchy[] = $parent->ID;
+//                $parent          = $parent->Parent();
+//            }
+//        }
         $jsConfig = array(
             'linkURL'       => Controller::join_links(FrontEndEditorToolbar::create()->Link(), "LinkForm"),
             'mediaURL'      => Controller::join_links(FrontEndEditorToolbar::create()->Link(), "MediaForm"),
@@ -112,10 +111,11 @@ class FrontendEditingControllerExtension extends Extension {
     }
 
     public function AddEditingIncludes() {
-        Requirements::javascriptTemplate(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdminTemplate.js', $this->getConfig());
+        $minExt = (Director::isDev()) ? "" : ".min";
+        Requirements::javascriptTemplate(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdminTemplate'.$minExt .'.js', $this->getConfig());
         Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/jquery.tinymce.min.js');
-        Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditor.js');
-        Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor.css');
+        Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndEditor'.$minExt .'.js');
+        Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor'.$minExt .'.css');
     }
 
     public function feFileUploadForm(SS_HTTPRequest $request) {
@@ -126,13 +126,10 @@ class FrontendEditingControllerExtension extends Extension {
         $fefileid    = $request->getVar('fefileid');
         $fefileclass = $request->getVar('fefileclass');
         $res         = false;
-        echo '<pre class="debug">' . PHP_EOL . __FILE__ . "::" . __LINE__ . PHP_EOL . '</pre>';
         if ($filesUpload == 1 && class_exists($fefileclass) && class_exists($feclass)) {
-            echo '<pre class="debug">' . PHP_EOL . __FILE__ . "::" . __LINE__ . PHP_EOL . '</pre>';
             $file = $fefileid ? $fefileclass::get()->byId($fefileid) : $fefileclass::create();
             $res  = FrontendEditing::getUploadForm($file, $feclass, $feid, $fefield);
         }
-        echo '<pre class="debug"> "$res"' . PHP_EOL . print_r($res, true) . PHP_EOL . '</pre>';
         return $res;
     }
 

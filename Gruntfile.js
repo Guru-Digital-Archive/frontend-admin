@@ -1,7 +1,5 @@
 
 module.exports = function (grunt) {
-    grunt.loadNpmTasks('grunt-contrib-watch');
-
     grunt.initConfig({
         watch: {
             scripts: {
@@ -58,30 +56,33 @@ module.exports = function (grunt) {
                     'javascript/dist/FrontEndAdmin.min.js': ['javascript/dist/FrontEndAdmin.js'],
                     'javascript/dist/FrontEndEditor.min.js': ['javascript/dist/FrontEndEditor.js'],
                     'javascript/dist/FrontEndEditorToolbar.min.js': ['javascript/dist/FrontEndEditorToolbar.js'],
-                    'javascript/dist/tinymce_ssfebuttons.min.js': ['javascript/dist/tinymce_ssfebuttons.js']
+                    'javascript/dist/FrontEndAdminTemplate.min.js': ['javascript/dist/FrontEndAdminTemplate.js']
                 }
             },
             options: {
                 banner: "<%= meta.banner %>"
             }
         },
-//		 CoffeeScript compilation
-//		coffee: {
-//			compile: {
-//				files: {
-//					"javascript/dist/FrontEndAdmin.js": "javascript/src/FrontEndAdmin.coffee"
-//				}
-//			}
-//		}
-
+        cssmin: {
+            target: {
+                files: [{
+                        expand: true,
+                        cwd: 'css',
+                        src: ['*.css', '!*.min.css'],
+                        dest: 'css',
+                        ext: '.min.css'
+                    }]
+            }
+        }
     });
 
+    grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-contrib-uglify");
-//	grunt.loadNpmTasks("grunt-contrib-coffee");
+    grunt.loadNpmTasks("grunt-contrib-cssmin");
 
-    grunt.registerTask("default", ["jshint", "concat", "uglify"]);
+    grunt.registerTask("default", ["jshint", "concat", "uglify", "cssmin"]);
     grunt.registerTask("travis", ["jshint"]);
 
 };
