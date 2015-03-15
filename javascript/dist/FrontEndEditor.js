@@ -28,20 +28,22 @@ var frontEndAdmin = frontEndAdmin || {};
          * Stolen from framework\thirdparty\tinymce_ssbuttons\editor_plugin_src.js and adapted to work with TinyMCE 4
          */
         $element.data("originalContent", editor.getContent());
-        $content = $(toPost.value);
-        $content.find(".ss-htmleditorfield-file.embed").each(function () {
-            var
-                    el = $(this),
-                    shortCode = "[embed width='" + el.attr("width") + "'" +
-                    " height='" + el.attr("height") + "'" +
-                    " class='" + el.data("cssclass") + "'" +
-                    " thumbnail='" + el.data("thumbnail") + "'" +
-                    "]" + el.data("url") +
-                    "[/embed]";
-            el.replaceWith(shortCode);
-        });
-        if ($content.length) {
-            toPost.value = $("<div />").append($content).html(); // Little hack to get outerHTML string
+        if ($element.hasClass("frontend-editable-html")) {
+            $content = $(toPost.value);
+            $content.find(".ss-htmleditorfield-file.embed").each(function () {
+                var
+                        el = $(this),
+                        shortCode = "[embed width='" + el.attr("width") + "'" +
+                        " height='" + el.attr("height") + "'" +
+                        " class='" + el.data("cssclass") + "'" +
+                        " thumbnail='" + el.data("thumbnail") + "'" +
+                        "]" + el.data("url") +
+                        "[/embed]";
+                el.replaceWith(shortCode);
+            });
+            if ($content.length) {
+                toPost.value = $("<div />").append($content).html(); // Little hack to get outerHTML string
+            }
         }
         editor.getBody().setAttribute("contenteditable", "false");
         saveFromFrontend(toPost, $element, function () {
@@ -86,43 +88,6 @@ var frontEndAdmin = frontEndAdmin || {};
             });
         }
     }
-//    function showMessage1(msg) {
-//        var result;
-//        if (typeof (msg) === "string") {
-//            msg = {content: msg};
-//        }
-//        if (typeof (msg.content) !== "string") {
-//            return;
-//        }
-//        if (typeof (msg.type) !== "string") {
-//            msg.type = "info";
-//        }
-//        switch (msg.type) {
-//            case "good":
-//            case "success":
-//                result = SS_StatusMessage.success(msg.content, msg.title, msg.options);
-//                break;
-//
-//            case "bad":
-//            case "error":
-//                result = SS_StatusMessage.error(msg.content, msg.title, msg.options);
-//                break;
-//
-//            case "warning":
-//            case "warn":
-//                result = SS_StatusMessage.warning(msg.content, msg.title, msg.options);
-//                break;
-//
-//            case "loading":
-////                msg.options = {extendedTimeOut: 0, timeOut: 0, iconClass: "toast-info toast-icon-loading"};
-//                result = SS_StatusMessage.loading(msg.content, msg.title, msg.options);
-//                break;
-//
-//            default:
-//                result = SS_StatusMessage.info(msg.content, msg.title, msg.options);
-//        }
-//        return  result;
-//    }
 
     frontEndAdmin.tinymceGlobalDefaults = {
         inline: true,
@@ -149,12 +114,6 @@ var frontEndAdmin = frontEndAdmin || {};
         relative_urls: true,
         document_base_url: frontEndAdmin.baseHref,
         extended_valid_elements: "-p[style|class]"
-//            content_css: frontEndAdmin.settings.cssFiles.join(),
-//            font_formats: frontEndAdmin.settings.wysiswgFontFormats,
-//            fontsize_formats: frontEndAdmin.settings.wysiswgFontSizes,
-//            style_formats: frontEndAdmin.settings.wysiswgStyles,
-//            formats: frontEndAdmin.settings.wysiswgFormats,
-//            templates: frontEndAdmin.settings.linkBase + "tinymcetemplates.json",
     });
     frontEndAdmin.tinymceVarCharDefaults = $.extend({}, frontEndAdmin.tinymceGlobalDefaults, {
         plugins: [
@@ -166,51 +125,86 @@ var frontEndAdmin = frontEndAdmin || {};
         toolbar_items_size: "small"
     });
 
-    $(".frontend-editable-varchar").entwine({
-        onmatch: function () {
-            var onBeforeInitEvent = $.Event("FrontEndEditor:onBeforeInitEditor"), options = $.extend({}, frontEndAdmin.tinymceVarCharDefaults), onAfterInitEvent = $.Event("FrontEndEditor:onAfterInitVarChar");
-            $(document).trigger(onBeforeInitEvent, [this, options]);
-            if (!onBeforeInitEvent.isDefaultPrevented()) {
-                this.tinymce(options);
-                $(document).trigger(onAfterInitEvent, [this]);
-            }
-        }
-    });
-    $(".frontend-editable-html").entwine({
-        onmatch: function () {
-            var onBeforeInitEvent = $.Event("FrontEndEditor:onBeforeInitEditor"), options = $.extend({}, frontEndAdmin.tinymceDefaults), onAfterInitEvent = $.Event("FrontEndEditor:onAfterInitHTML");
-            $(document).trigger(onBeforeInitEvent, [this, options]);
-            if (!onBeforeInitEvent.isDefaultPrevented()) {
-                this.tinymce(options);
-                $(document).trigger(onAfterInitEvent, [this]);
-            }
-        }
-    });
-    $(".frontend-editable-enum").entwine({
-        SaveEnabled: true,
-        onmatch: function () {
-            var onBeforeInitEvent = $.Event("FrontEndEditor:onBeforeInitEditor");
-            $(document).trigger(onBeforeInitEvent, [this, options]);
-            this.setSaveEnabled(!onBeforeInitEvent.isDefaultPrevented());
-        },
-        onchange: function () {
-            if (this.getSaveEnabled()) {
-                saveFromSelect(this);
-            }
-        }
-    });
-    $(".frontend-editable-boolean").entwine({
-        SaveEnabled: true,
-        onmatch: function () {
-            var onBeforeInitEvent = $.Event("FrontEndEditor:onBeforeInitEditor");
-            $(document).trigger(onBeforeInitEvent, [this, options]);
-            this.setSaveEnabled(!onBeforeInitEvent.isDefaultPrevented());
-        },
-        onchange: function () {
-            if (this.getSaveEnabled()) {
-                saveFromSelect(this);
-            }
-        }
+    // Prevent editable elements within an anchor navigation to the anchors href
+    $("a .frontend-editable").click(function (e) {
+        e.preventDefault();
     });
 
+    $(".frontend-editable-varchar, .frontend-editable-html").entwine({
+        onmatch: function () {
+            var onBeforeInitEvent = $.Event("FrontEndEditor:onBeforeInitEditor"), options, onAfterInitEvent, $label = $("<span class='fe-label' style='position: absolute'><span class='fe-label-text'></span></span>"), offset = this.offset();
+            $label.css({top: offset.top - $label.outerHeight(), left: offset.left}).find(".fe-label-text")
+                    .text(this.data("feclass") + " (ID: " + this.data("feid") + ") - " + this.data("fefield"));
+            this.data("fe-label", $label);
+            this.positionLabel();
+            $("body").append($label);
+
+            $(document).trigger(onBeforeInitEvent, [this, options]);
+            if (this.hasClass("frontend-editable-varchar")) {
+                options = $.extend({}, frontEndAdmin.tinymceVarCharDefaults);
+                onAfterInitEvent = $.Event("FrontEndEditor:onAfterInitVarChar");
+            } else if (this.hasClass("frontend-editable-html")) {
+                options = $.extend({}, frontEndAdmin.tinymceDefaults);
+                onAfterInitEvent = $.Event("FrontEndEditor:onAfterInitHTML");
+            }
+            if (!onBeforeInitEvent.isDefaultPrevented()) {
+                if (this.hasClass("frontend-editable-varchar") || this.hasClass("frontend-editable-html")) {
+                    this.tinymce(options);
+                }
+                $(document).trigger(onAfterInitEvent, [this]);
+            }
+        },
+        onmouseenter: function () {
+            this.showLabel();
+        },
+        onmouseleave: function () {
+            this.hideLabel();
+        },
+        onfocusin: function () {
+            this.showLabel();
+        },
+        onfocusout: function () {
+            this.hideLabel();
+        },
+        showLabel: function () {
+            var $label = this.data("fe-label");
+            if ($label) {
+                this.positionLabel();
+                $label.addClass("fe-label-show");
+            }
+        },
+        hideLabel: function () {
+            var $label = this.data("fe-label");
+            if ($label && !this.is(":focus")) {
+                $label.removeClass("fe-label-show");
+            }
+        },
+        positionLabel: function () {
+            var
+                    $label = this.data("fe-label"),
+                    offset = this.offset(),
+                    padLeft = parseInt($label.css("padding-left"),10 ),
+                    offsetTop = offset.top, offsetLeft = offset.left;
+            if ($label) {
+                offsetTop = offsetTop - $label.outerHeight();
+                if (padLeft) {
+                    offsetLeft = offsetLeft - padLeft;
+                }
+                $label.css({top: offsetTop, left: offsetLeft});
+            }
+        }
+    });
+    $(".frontend-editable-enum, .frontend-editable-boolean").entwine({
+        SaveEnabled: true,
+        onmatch: function () {
+            var onBeforeInitEvent = $.Event("FrontEndEditor:onBeforeInitEditor");
+            $(document).trigger(onBeforeInitEvent, [this, options]);
+            this.setSaveEnabled(!onBeforeInitEvent.isDefaultPrevented());
+        },
+        onchange: function () {
+            if (this.getSaveEnabled()) {
+                saveFromSelect(this);
+            }
+        }
+    });
 })(jQuery);

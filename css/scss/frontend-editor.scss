@@ -1,24 +1,61 @@
 @import "compass/css3";
+@import "compass/utilities/general/clearfix";
+$fe-editable-colour: #FF5900;
+$fe-editable-active-colour: #53F3C3;
 
 .mce-tinymce{
     button{
         text-transform: none;
         letter-spacing: normal;
     }
-
 }
 
-.mce-frontend-editable-dialog{
-    .mce-container-body{
+.mce-content-body{
+    @include clearfix();
+    .mce-frontend-editable-dialog &{
         background: url(../../framework/admin/images/spinner.gif) no-repeat 50% 50% #e6eaed;
     }
 }
+
 .highlight-editable{
     .frontend-editable{
-        border: 1px solid #aaaaaa;
+        @include transition(box-shadow 0.35s ease,border-color 0.35s ease);
+        border: 1px solid;
+        border-color: $fe-editable-colour;
         margin: -1px;
-        &:hover{
-            @include box-shadow(  0px 0px 5px 0px rgba(50, 50, 50, 0.75));
+        @include box-shadow( 0px 0px 5px 0px rgba($fe-editable-colour, 0.75));
+        &:hover,&:focus{
+            border-color: $fe-editable-active-colour;
+            @include box-shadow( 0px 0px 5px 0px rgba($fe-editable-active-colour, 0.75));
+        }
+    }
+}
+
+.fe-label{
+    position: absolute;
+    box-sizing: border-box;
+    padding: 5px 5px 0 5px;
+    display: block;
+    overflow: hidden;
+    line-height: 1;
+    opacity: 0;
+    @include transition(opacity 0.35s ease);
+    .fe-label-text{
+        display: block;
+        padding: 4px;
+        background: $fe-editable-colour;
+        white-space: nowrap;
+        @include transition(box-shadow 0.35s ease, border-color 0.35s ease,background 0.35s ease);
+        @include box-shadow( 0px 0px 5px 0px rgba($fe-editable-colour, 0.75));
+        @include border-top-radius(4px);
+    }
+    &.fe-label-show{
+        opacity: 1;
+        visibility: visible;
+        .fe-label-text{
+            border-color: $fe-editable-active-colour;
+            background: $fe-editable-active-colour;
+            @include box-shadow( 0px 0px 5px 0px rgba($fe-editable-active-colour, 0.95));
         }
     }
 }
