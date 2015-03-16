@@ -33,6 +33,7 @@
   display: block;
   overflow: hidden;
   line-height: 1;
+  visibility: hidden;
   opacity: 0;
   -moz-transition: opacity 0.35s ease;
   -o-transition: opacity 0.35s ease;

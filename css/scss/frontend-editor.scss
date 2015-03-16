@@ -38,6 +38,7 @@ $fe-editable-active-colour: #53F3C3;
     display: block;
     overflow: hidden;
     line-height: 1;
+    visibility: hidden;
     opacity: 0;
     @include transition(opacity 0.35s ease);
     .fe-label-text{

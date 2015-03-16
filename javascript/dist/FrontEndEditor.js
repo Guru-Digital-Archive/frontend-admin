@@ -124,33 +124,38 @@ var frontEndAdmin = frontEndAdmin || {};
         statusbar: false,
         toolbar_items_size: "small"
     });
+    frontEndAdmin.tinymceTextDefaults = frontEndAdmin.tinymceVarCharDefaults;
 
     // Prevent editable elements within an anchor navigation to the anchors href
     $("a .frontend-editable").click(function (e) {
         e.preventDefault();
     });
 
-    $(".frontend-editable-varchar, .frontend-editable-html").entwine({
+    $(".frontend-editable-varchar, .frontend-editable-text, .frontend-editable-html").entwine({
         onmatch: function () {
             var onBeforeInitEvent = $.Event("FrontEndEditor:onBeforeInitEditor"), options, onAfterInitEvent, $label = $("<span class='fe-label' style='position: absolute'><span class='fe-label-text'></span></span>"), offset = this.offset();
             $label.css({top: offset.top - $label.outerHeight(), left: offset.left}).find(".fe-label-text")
                     .text(this.data("feclass") + " (ID: " + this.data("feid") + ") - " + this.data("fefield"));
             this.data("fe-label", $label);
-            this.positionLabel();
+            $label.data("fe-field", this);
             $("body").append($label);
+//            $label.show();
+//            this.positionLabel();
+//            $label.hide();
 
-            $(document).trigger(onBeforeInitEvent, [this, options]);
             if (this.hasClass("frontend-editable-varchar")) {
                 options = $.extend({}, frontEndAdmin.tinymceVarCharDefaults);
+                onAfterInitEvent = $.Event("FrontEndEditor:onAfterInitVarChar");
+            } else if (this.hasClass("frontend-editable-text")) {
+                options = $.extend({}, frontEndAdmin.tinymceTextDefaults);
                 onAfterInitEvent = $.Event("FrontEndEditor:onAfterInitVarChar");
             } else if (this.hasClass("frontend-editable-html")) {
                 options = $.extend({}, frontEndAdmin.tinymceDefaults);
                 onAfterInitEvent = $.Event("FrontEndEditor:onAfterInitHTML");
             }
-            if (!onBeforeInitEvent.isDefaultPrevented()) {
-                if (this.hasClass("frontend-editable-varchar") || this.hasClass("frontend-editable-html")) {
-                    this.tinymce(options);
-                }
+            $(document).trigger(onBeforeInitEvent, [this, options]);
+            if (!onBeforeInitEvent.isDefaultPrevented() && options) {
+                this.tinymce(options);
                 $(document).trigger(onAfterInitEvent, [this]);
             }
         },
@@ -183,7 +188,7 @@ var frontEndAdmin = frontEndAdmin || {};
             var
                     $label = this.data("fe-label"),
                     offset = this.offset(),
-                    padLeft = parseInt($label.css("padding-left"),10 ),
+                    padLeft = parseInt($label.css("padding-left"), 10),
                     offsetTop = offset.top, offsetLeft = offset.left;
             if ($label) {
                 offsetTop = offsetTop - $label.outerHeight();

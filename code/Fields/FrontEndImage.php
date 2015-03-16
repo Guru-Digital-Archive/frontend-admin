@@ -9,7 +9,6 @@ class FrontEndImage extends Image {
 
     public function __construct($record = null, $isSingleton = false, $model = null) {
         parent::__construct($record, $isSingleton, $model);
-
         echo '<pre class="debug"> "FrontEndImage"' .  PHP_EOL . '</pre>';
     }
     /**
