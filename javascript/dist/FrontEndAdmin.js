@@ -74,7 +74,7 @@
     settings.load();
 
     $(function () {
-        var cmsUrl = $("meta[name='x-cms-edit-link']").attr("content");
+        var cmsUrl = $("meta[name='x-cms-edit-link']").attr("content") || frontEndAdmin.editHref;
         if (typeof window.jQuery.fn.button !== "undefined" && typeof window.jQuery.fn.button.noConflict === "function") {
             window.jQuery.fn.bootstrapBtn = window.jQuery.fn.button.noConflict();
         }
@@ -254,6 +254,15 @@
             $(".admin-tools-cmslink").entwine({
                 onmatch: function () {
                     this.button({icons: {primary: "ui-icon-newwin"}});
+                },
+                onclick: function () {
+                    var $adminFrame = $("div.admin-panel").getAdminFrame(), frameSrc = $adminFrame.attr("src"), href = this.attr("href");
+                    if ($adminFrame[0] && $adminFrame[0].contentWindow) {
+                        frameSrc = $adminFrame[0].contentWindow.location.href;
+                    }
+                    if (href !== frameSrc) {
+                        this.attr("href", frameSrc);
+                    }
                 }
             });
             $(".saveable").entwine({
