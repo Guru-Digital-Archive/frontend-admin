@@ -248,9 +248,9 @@
                     this.button({icons: {primary: "ui-icon-newwin"}});
                 },
                 onclick: function () {
-                    var $adminFrame = $("div.admin-panel").getAdminFrame(), frameSrc = $adminFrame.attr("src"), href = this.attr("href");
+                    var $adminFrame = $("div.admin-panel").getAdminFrame(), frameSrc = $adminFrame.attr("src").replace(/[&\?]frontEndAdmin=true/g,""), href = this.attr("href").replace(/[&\?]frontEndAdmin=true/g,"");
                     if ($adminFrame[0] && $adminFrame[0].contentWindow) {
-                        frameSrc = $adminFrame[0].contentWindow.location.href;
+                        frameSrc = $adminFrame[0].contentWindow.location.href.replace(/[&\?]frontEndAdmin=true/g,"");
                     }
                     if (href !== frameSrc) {
                         this.attr("href", frameSrc);
