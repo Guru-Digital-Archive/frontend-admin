@@ -73,7 +73,7 @@ class FrontEndEditorToolbar extends Controller {
             FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.Preview.js',
             FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.BatchActions.js',
             FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.FieldHelp.js',
-            FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.TreeDropdownField.js',
+//            FRAMEWORK_ADMIN_DIR . '/javascript/LeftAndMain.TreeDropdownField.js',
                         ), Requirements::add_i18n_javascript(FRAMEWORK_DIR . '/javascript/lang', true, true), Requirements::add_i18n_javascript(FRAMEWORK_ADMIN_DIR . '/javascript/lang', true, true)
         ));
 
