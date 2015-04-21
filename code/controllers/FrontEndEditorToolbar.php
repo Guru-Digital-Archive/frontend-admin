@@ -16,7 +16,7 @@ class FrontEndEditorToolbar extends Controller {
      */
     protected function GetIncludes() {
         Requirements::combine_files(
-                'lib.js', array(
+                'frontend-lib.js', array(
             THIRDPARTY_DIR . '/jquery/jquery.js',
             FRAMEWORK_DIR . '/javascript/jquery-ondemand/jquery.ondemand.js',
             FRAMEWORK_ADMIN_DIR . '/javascript/lib.js',
@@ -47,7 +47,7 @@ class FrontEndEditorToolbar extends Controller {
                 )
         );
         Requirements::combine_files(
-                'cmsmain.js', array_merge(
+                'frontend-cmsmain.js', array_merge(
                         array(
             CMS_DIR . '/javascript/CMSMain.js',
             CMS_DIR . '/javascript/CMSMain.EditForm.js',
