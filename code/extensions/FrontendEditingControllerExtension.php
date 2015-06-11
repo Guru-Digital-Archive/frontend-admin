@@ -76,7 +76,7 @@ class FrontendEditingControllerExtension extends Extension {
         $controller = Controller::curr();
         if ($controller->getRequest()->isAjax()) {
             $controller->getResponse()->addHeader('Content-type', 'application/json');
-            $response = Convert::raw2json($response);
+            $response = Convert::raw2json($response->jsonSerialize());
         } else {
             $response = array("StatusMessage" => $response);
         }
