@@ -107,4 +107,17 @@ class FrontendEditing {
         }
     }
 
+    public static function ShowAdmin() {
+        $result = false;
+        if (Controller::has_curr()) {
+            $controller = Controller::curr();
+            /* @var $page Page */
+            $page       = $controller->data();
+            if ($page && $page->exists()) {
+                $result = $page->canEdit() && !$controller->getRequest()->offsetExists('stage');
+            }
+        }
+        return $result;
+    }
+
 }

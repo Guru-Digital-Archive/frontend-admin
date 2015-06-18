@@ -14,3 +14,6 @@ Object::useCustomClass('Varchar', 'FrontendEditorVarchar', true);
 Object::add_extension('Page_Controller', 'FrontendEditingControllerExtension');
 Object::add_extension('Page', 'FrontendAdminPageExtension');
 
+if (class_exists("DynamicCacheExtension")) {
+    Object::add_extension('DynamicCache', 'FrontEndAdminDynamicCacheExtension');
+}
