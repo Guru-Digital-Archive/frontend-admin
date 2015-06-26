@@ -5,14 +5,20 @@ if (class_exists("DynamicCacheExtension")) {
     class FrontEndAdminDynamicCacheExtension extends DynamicCacheExtension {
 
         public function updateEnabled(&$enabled) {
-            global $databaseConfig;
-            if (Session::get("loggedInAs")) {
-                if (!DB::getConn() && $databaseConfig) {
-                    DB::connect($databaseConfig);
+            if ($enabled) {
+                if (Session::get("loggedInAs")) {
+                    $this->checkAndConnectDB();
+                    $enabled = !Injector::inst()->create('LeftAndMain')->canView();
+                } else {
+                    $enabled = true;
                 }
-                $enabled = !Injector::inst()->create('LeftAndMain')->canView();
-            } else {
-                $enabled = true;
+            }
+        }
+
+        private function checkAndConnectDB() {
+            global $databaseConfig;
+            if (!DB::getConn() && $databaseConfig) {
+                DB::connect($databaseConfig);
             }
         }
 
