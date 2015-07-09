@@ -1,11 +1,13 @@
 /*
- *  gdmedia/silverstripe-frontend-admin - v
+ *  Silverstripe front end admin  - v0.0.1
  *  Front end admin for Silverstripe
  *  https://github.com/gurudigital/frontend-admin
  *
  *  Made by Corey Sewell - Guru Digital Media
  *  Under BSD-3-Clause License
+ *
  */
+
 var frontEndAdmin = frontEndAdmin || {};
 (function ($) {
     frontEndAdmin.baseHref = $("base").attr("href");

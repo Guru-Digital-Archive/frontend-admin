@@ -7,7 +7,7 @@
     "authors": [
         "Corey Sewell <corey@gdmedia.tv>"
     ],
-    "license": "MIT",
+    "license": "BSD-3-Clause",
     "private": true,
     "ignore": [
         "**/.*",

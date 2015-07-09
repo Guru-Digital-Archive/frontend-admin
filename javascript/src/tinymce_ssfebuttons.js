@@ -1,3 +1,4 @@
+/*global frontEndAdmin */
 (function($) {
     tinymce.PluginManager.add("SSFEButtons", function(editor) {
         function showLinkDialog() {

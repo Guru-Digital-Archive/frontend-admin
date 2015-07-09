@@ -1,3 +1,5 @@
+/*global frontEndAdmin */
+
 (function ($) {
     /**
      * Persistent settings
@@ -64,7 +66,9 @@
         }
     };
     settings.load();
-
+    function fixURL(url) {
+        return  url + (url.split("?")[1] ? "&" : "?") + "frontEndAdmin=true";
+    }
     $(function () {
         var cmsUrl = $("meta[name='x-cms-edit-link']").attr("content") || frontEndAdmin.editHref;
         if (typeof window.jQuery.fn.button !== "undefined" && typeof window.jQuery.fn.button.noConflict === "function") {
@@ -77,7 +81,7 @@
                 ClosedPosition: 0,
                 AdminBtn: $("<button>").addClass("btn btn-default").attr("id", "adminToggle").text(frontEndAdmin.toggleLabel),
                 AdminBtnWrap: $("<div>").addClass("admin-panel-toggle-wrap"),
-                AdminFrame: $("<iframe>").attr("id", "admin-frame").attr("src", frontEndAdmin.editHref + (frontEndAdmin.editHref.split("?")[1] ? "&" : "?") + "frontEndAdmin=true"),
+                AdminFrame: $("<iframe>").attr("id", "admin-frame").attr("src", fixURL(frontEndAdmin.editHref)),
                 AdminFrameWrap: $("<div>").addClass("admin-frame-wrap"),
                 ToolsWrap: $("<div>").addClass("admin-tools-wrap ui-widget-header ui-corner-all"),
                 ToolsEditMode: $("<input type='checkbox' />").data("settings-key", "editmode").attr("id", "admin-tools-editmode").addClass("admin-tools-editmode admin-tools-toggle saveable"),
@@ -248,9 +252,9 @@
                     this.button({icons: {primary: "ui-icon-newwin"}});
                 },
                 onclick: function () {
-                    var $adminFrame = $("div.admin-panel").getAdminFrame(), frameSrc = $adminFrame.attr("src").replace(/[&\?]frontEndAdmin=true/g,""), href = this.attr("href").replace(/[&\?]frontEndAdmin=true/g,"");
+                    var $adminFrame = $("div.admin-panel").getAdminFrame(), frameSrc = $adminFrame.attr("src").replace(/[&\?]frontEndAdmin=true/g, ""), href = this.attr("href").replace(/[&\?]frontEndAdmin=true/g, "");
                     if ($adminFrame[0] && $adminFrame[0].contentWindow) {
-                        frameSrc = $adminFrame[0].contentWindow.location.href.replace(/[&\?]frontEndAdmin=true/g,"");
+                        frameSrc = $adminFrame[0].contentWindow.location.href.replace(/[&\?]frontEndAdmin=true/g, "");
                     }
                     if (href !== frameSrc) {
                         this.attr("href", frameSrc);
@@ -309,11 +313,17 @@
                         // Make the logout link affect the top most window
                         f$(".logout-link").attr("target", "_top");
 
+                        // Append frontEndAdmin=true to action URLs of forms
+                        f$("form").each(function () {
+                            var action = $(this).attr("action");
+                            $(this).attr("action", fixURL(action));
+                        });
+
                         // Append frontEndAdmin=true to URLs for all ajax requests in the admin panel iframe
                         // This ensures saving a page does not overwrite content
                         f$("div.cms-container").entwine({
                             onbeforestatechange: function (e, data) {
-                                data.state.url = data.state.url + (data.state.url.split("?")[1] ? "&" : "?") + "frontEndAdmin=true";
+                                data.state.url = fixURL(data.state.url);
                             }
                         });
 
