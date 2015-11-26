@@ -9,8 +9,6 @@ if (class_exists("DynamicCacheExtension")) {
                 if (Session::get("loggedInAs")) {
                     $this->checkAndConnectDB();
                     $enabled = !Injector::inst()->create('LeftAndMain')->canView();
-                } else {
-                    $enabled = true;
                 }
             }
         }
