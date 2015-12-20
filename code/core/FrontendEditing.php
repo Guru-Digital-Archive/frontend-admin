@@ -1,6 +1,7 @@
 <?php
 
-class FrontendEditing {
+class FrontendEditing
+{
 
     public static $ForceEditable   = false;
     public static $EditableClasses = array();
@@ -11,7 +12,8 @@ class FrontendEditing {
      * @param $value
      * @param null $record
      */
-    public static function setValue(DBField $dbField, $value, $record = null) {
+    public static function setValue(DBField $dbField, $value, $record = null)
+    {
         $canEdit = (Controller::curr() instanceof Page_Controller && Controller::curr()->data()->canEdit());
         if (!$canEdit) {
             $canEdit = is_object($record) && in_array(get_class($record), self::$EditableClasses) && method_exists($record, 'canEdit') && $record->canEdit();
@@ -28,7 +30,8 @@ class FrontendEditing {
      * @param DBField $dbField
      * @return bool
      */
-    public static function isEditable(DBField $dbField) {
+    public static function isEditable(DBField $dbField)
+    {
         return isset($dbField->makeEditable) && $dbField->makeEditable;
     }
 
@@ -37,7 +40,8 @@ class FrontendEditing {
      * @param DBField $dbField
      * @return mixed
      */
-    public static function getClassName(DBField $dbField) {
+    public static function getClassName(DBField $dbField)
+    {
         return $dbField->editClassName;
     }
 
@@ -46,15 +50,18 @@ class FrontendEditing {
      * @param DBField $dbField
      * @return mixed
      */
-    public static function getID(DBField $dbField) {
+    public static function getID(DBField $dbField)
+    {
         return $dbField->editID;
     }
 
-    public static function editingEnabled() {
-        return FrontendEditing::$ForceEditable || ( (Cookie::get('editmode') !== 'false') && !Controller::curr()->getRequest()->offsetExists('stage'));
+    public static function editingEnabled()
+    {
+        return FrontendEditing::$ForceEditable || ((Cookie::get('editmode') !== 'false') && !Controller::curr()->getRequest()->offsetExists('stage'));
     }
 
-    public static function enablingEditingFor($class) {
+    public static function enablingEditingFor($class)
+    {
         FrontendEditing::$ForceEditable = true;
         Controller::curr()->AddEditingIncludes();
 
@@ -63,7 +70,8 @@ class FrontendEditing {
         }
     }
 
-    public static function disableEditingFor($class) {
+    public static function disableEditingFor($class)
+    {
         if (in_array($class, self::$EditableClasses)) {
             unset(self::$EditableClasses[array_search($class, self::$EditableClasses)]);
         }
@@ -72,7 +80,8 @@ class FrontendEditing {
         }
     }
 
-    public static function getUploadForm($file, $parentClass, $parentId, $parentField) {
+    public static function getUploadForm($file, $parentClass, $parentId, $parentField)
+    {
         if ($file instanceof File && class_exists($parentClass) && is_subclass_of($parentClass, "DataObject")) {
             $parent                           = $parentClass::get()->byId($parentId);
             $fields                           = new FieldList(
@@ -107,7 +116,8 @@ class FrontendEditing {
         }
     }
 
-    public static function ShowAdmin() {
+    public static function ShowAdmin()
+    {
         $result = false;
         if (Controller::has_curr()) {
             $controller = Controller::curr();
@@ -119,5 +129,4 @@ class FrontendEditing {
         }
         return $result;
     }
-
 }
