@@ -3,7 +3,8 @@
 /**
  *
  */
-class FrontendEditingControllerExtension extends Extension {
+class FrontendEditingControllerExtension extends Extension
+{
 
     private static $allowed_actions = array(
         'fesave', 'feFileUploadForm'
@@ -13,8 +14,8 @@ class FrontendEditingControllerExtension extends Extension {
      * add requirements for frontend editing only when logged in
      * @todo Use TinyMCEs Compressor 4.0.2 PHP
      */
-    public function onBeforeInit() {
-
+    public function onBeforeInit()
+    {
         $canEdit        = FrontendEditing::ShowAdmin();
         $editingEnabled = FrontendEditing::editingEnabled();
         $minExt         = (Director::isDev()) ? "" : ".min";
@@ -52,7 +53,8 @@ class FrontendEditingControllerExtension extends Extension {
      * saves the DBField value, called with an ajax request
      * @return bool
      */
-    public function fesave() {
+    public function fesave()
+    {
         $response        = StatusMessage::create("An unknown error has occured", StatusMessageTypes::DANGER);
         $response->model = new stdClass();
         $item            = FrontEndEditItem::createFromRequest();
@@ -82,7 +84,8 @@ class FrontendEditingControllerExtension extends Extension {
         return $response;
     }
 
-    public function getConfig($page = null) {
+    public function getConfig($page = null)
+    {
         $themeDir      = $this->owner->ThemeDir();
         $baseDir       = Director::baseURL();
         $baseHref      = Director::protocolAndHost() . $baseDir;
@@ -109,7 +112,8 @@ class FrontendEditingControllerExtension extends Extension {
         return $jsConfig;
     }
 
-    public function AddEditingIncludes() {
+    public function AddEditingIncludes()
+    {
         $minExt = (Director::isDev()) ? "" : ".min";
         Requirements::javascriptTemplate(FRONTEND_ADMIN_DIR . '/javascript/dist/FrontEndAdminTemplate' . $minExt . '.js', $this->getConfig());
         Requirements::javascript(FRONTEND_ADMIN_DIR . '/javascript/thirdparty/tinymce/js/tinymce/jquery.tinymce.min.js');
@@ -117,7 +121,8 @@ class FrontendEditingControllerExtension extends Extension {
         Requirements::css(FRONTEND_ADMIN_DIR . '/css/frontend-editor' . $minExt . '.css');
     }
 
-    public function feFileUploadForm(SS_HTTPRequest $request) {
+    public function feFileUploadForm(SS_HTTPRequest $request)
+    {
         $feclass     = $request->getVar('feclass');
         $fefield     = $request->getVar('fefield');
         $feid        = $request->getVar('feid');
@@ -131,10 +136,10 @@ class FrontendEditingControllerExtension extends Extension {
         }
         return $res;
     }
-
 }
 
-class FrontEndEditItem extends Object {
+class FrontEndEditItem extends Object
+{
 
     public $class;
     public $field;
@@ -147,7 +152,8 @@ class FrontEndEditItem extends Object {
      * @param SS_HTTPRequest $request
      * @return FrontEndEditItem
      */
-    public static function createFromRequest(SS_HTTPRequest $request = null) {
+    public static function createFromRequest(SS_HTTPRequest $request = null)
+    {
         if (is_null($request)) {
             $request = Controller::curr()->getRequest();
         }
@@ -166,7 +172,8 @@ class FrontEndEditItem extends Object {
      * @param int $id
      * @param string $value
      */
-    public function __construct($class, $field, $id, $value) {
+    public function __construct($class, $field, $id, $value)
+    {
         parent::__construct();
         $this->class = $class;
         $this->field = $field;
@@ -174,14 +181,16 @@ class FrontEndEditItem extends Object {
         $this->value = $value;
     }
 
-    public function exists() {
+    public function exists()
+    {
         return
                 parent::exists() &&
                 class_exists($this->class) &&
                 is_object($this->getRecord());
     }
 
-    public function isVersioned() {
+    public function isVersioned()
+    {
         return
                 class_exists($this->class) &&
                 method_exists($this->class, 'has_extension') &&
@@ -192,7 +201,8 @@ class FrontEndEditItem extends Object {
      *
      * @return DataObject|Versioned
      */
-    public function getRecord() {
+    public function getRecord()
+    {
         if (!$this->record) {
             $this->record = $this->isVersioned() ?
                     Versioned::get_by_stage($this->class, 'Live')->byID($this->id) :
@@ -201,15 +211,18 @@ class FrontEndEditItem extends Object {
         return $this->record;
     }
 
-    public function canEdit() {
+    public function canEdit()
+    {
         return Permission::check('ADMIN') || method_exists($this->getRecord(), 'canEdit') && $this->getRecord()->canEdit();
     }
 
-    public function canPublish() {
+    public function canPublish()
+    {
         return Permission::check('ADMIN') || method_exists($this->getRecord(), 'canPublish') && $this->getRecord()->canPublish();
     }
 
-    public function saveValue() {
+    public function saveValue()
+    {
         $result = false;
 //        return true;
         if ($this->exists()) {
@@ -231,5 +244,4 @@ class FrontEndEditItem extends Object {
         }
         return $result;
     }
-
 }

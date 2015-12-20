@@ -5,7 +5,8 @@
  *
  * @author corey
  */
-class FrontEndEnum extends Enum {
+class FrontEndEnum extends Enum
+{
 
     /**
      * Set the value on the field.
@@ -15,7 +16,8 @@ class FrontEndEnum extends Enum {
      * @param mixed $value
      * @param array $record
      */
-    public function setValue($value, $record = null) {
+    public function setValue($value, $record = null)
+    {
         FrontendEditing::setValue($this, $value, $record);
         parent::setValue($value, $record);
     }
@@ -24,7 +26,8 @@ class FrontEndEnum extends Enum {
      * Returns the string which will be used in the template
      * @return string
      */
-    public function forTemplate() {
+    public function forTemplate()
+    {
         $isEditable = FrontendEditing::editingEnabled() && FrontendEditing::isEditable($this);
         $value      = parent::forTemplate();
         if ($isEditable) {
@@ -37,5 +40,4 @@ class FrontEndEnum extends Enum {
         }
         return $value;
     }
-
 }

@@ -5,7 +5,8 @@
  *
  * @property Image $owner
  */
-class FrontEndImageExtension extends DataExtension {
+class FrontEndImageExtension extends DataExtension
+{
     /**
      * Set the value on the field.
      * Optionally takes the whole record as an argument,
@@ -34,7 +35,8 @@ class FrontEndImageExtension extends DataExtension {
      * Returns the string which will be used in the template
      * @return string
      */
-    public function forTemplateEdit() {
+    public function forTemplateEdit()
+    {
         $dbField    = $this->owner->dbObject('Filename');
         FrontendEditing::setValue($dbField, $this->owner->Filename, $this->owner);
         $isEditable = FrontendEditing::editingEnabled() && FrontendEditing::isEditable($dbField);
@@ -44,5 +46,4 @@ class FrontEndImageExtension extends DataExtension {
         }
         return $value;
     }
-
 }

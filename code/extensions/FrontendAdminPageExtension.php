@@ -3,7 +3,8 @@
 /**
  * Extension class to assist the Frontend Admin Panel
  */
-class FrontendAdminPageExtension extends DataExtension {
+class FrontendAdminPageExtension extends DataExtension
+{
 
     /**
      * Checks for frontEndAdmin or HTTP_X_FRONT_END_ADMIN and removes the Content
@@ -14,7 +15,8 @@ class FrontendAdminPageExtension extends DataExtension {
      *
      * @param FieldList $fields
      */
-    public function updateCMSFields(FieldList $fields) {
+    public function updateCMSFields(FieldList $fields)
+    {
         $controller       = Controller::curr();
         $isEditController = $controller instanceof CMSPageEditController;
         $xfrontEndAdmin   = filter_input(INPUT_SERVER, 'HTTP_X_FRONT_END_ADMIN') == "true";
@@ -24,5 +26,4 @@ class FrontendAdminPageExtension extends DataExtension {
             $fields->removeFieldFromTab("Root.Main", "Content");
         }
     }
-
 }

@@ -1,8 +1,8 @@
 <?php
 
 if (class_exists('VersionedImageExtension')) {
-
-    class FrontEndVersionedImageExtension extends VersionedImageExtension {
+    class FrontEndVersionedImageExtension extends VersionedImageExtension
+    {
 
         /**
          * Set the value on the field.
@@ -12,7 +12,8 @@ if (class_exists('VersionedImageExtension')) {
          * @param mixed $value
          * @param array $record
          */
-        public function setValue($value, $record = null) {
+        public function setValue($value, $record = null)
+        {
             FrontendEditing::setValue($this, $value, $record);
             parent::setValue($value, $record);
         }
@@ -21,7 +22,8 @@ if (class_exists('VersionedImageExtension')) {
          * Returns the string which will be used in the template
          * @return string
          */
-        public function forTemplate() {
+        public function forTemplate()
+        {
             $isEditable = FrontendEditing::editingEnabled() && FrontendEditing::isEditable($this);
             $value      = parent::forTemplate();
             echo '<pre class="debug"> "$this"' . PHP_EOL . print_r($this, true) . PHP_EOL . '</pre>';
@@ -37,7 +39,5 @@ if (class_exists('VersionedImageExtension')) {
             }
             return $value;
         }
-
     }
-
 }

@@ -1,11 +1,13 @@
 <?php
 
-class FrontEndEditorToolbar extends Controller {
+class FrontEndEditorToolbar extends Controller
+{
 
     private static $allowed_actions = array('MediaForm', 'LinkForm', 'EditorToolbar');
     public $fromType;
 
-    public function init() {
+    public function init()
+    {
         $this->GetIncludes();
         parent::init();
     }
@@ -14,7 +16,8 @@ class FrontEndEditorToolbar extends Controller {
      * Load required CSS and Javascript
      * @todo We probably go a bit overboard and include things we dont need here..... clean it up
      */
-    protected function GetIncludes() {
+    protected function GetIncludes()
+    {
         Requirements::combine_files(
                 'frontend-lib.js', array(
             THIRDPARTY_DIR . '/jquery/jquery.js',
@@ -91,17 +94,20 @@ class FrontEndEditorToolbar extends Controller {
         Requirements::css(FRAMEWORK_ADMIN_DIR . "/css/screen.css");
     }
 
-    public function MediaForm(SS_HTTPRequest $request) {
+    public function MediaForm(SS_HTTPRequest $request)
+    {
         $this->fromType = 'MediaForm';
         return $this->render();
     }
 
-    public function LinkForm(SS_HTTPRequest $request) {
+    public function LinkForm(SS_HTTPRequest $request)
+    {
         $this->fromType = 'LinkForm';
         return $this->render();
     }
 
-    public function EditorToolbar() {
+    public function EditorToolbar()
+    {
         return HtmlEditorField_Toolbar::create($this, "EditorToolbar");
     }
 

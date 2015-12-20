@@ -4,7 +4,8 @@
  *
  * @see https://github.com/michelsteege/silverstripe-frontend-editing
  */
-class FrontendEditorHTMLText extends HTMLText {
+class FrontendEditorHTMLText extends HTMLText
+{
 
     /**
      * Set the value on the field.
@@ -14,7 +15,8 @@ class FrontendEditorHTMLText extends HTMLText {
      * @param mixed $value
      * @param array $record
      */
-    public function setValue($value, $record = null) {
+    public function setValue($value, $record = null)
+    {
         FrontendEditing::setValue($this, $value, $record);
         parent::setValue($value, $record);
     }
@@ -23,7 +25,8 @@ class FrontendEditorHTMLText extends HTMLText {
      * Returns the string which will be used in the template
      * @return string
      */
-    public function forTemplate() {
+    public function forTemplate()
+    {
         $isEditable = FrontendEditing::editingEnabled() && FrontendEditing::isEditable($this);
         if ($isEditable) {
             $this->processShortcodes = false;
@@ -35,5 +38,4 @@ class FrontendEditorHTMLText extends HTMLText {
         }
         return $value;
     }
-
 }
