@@ -1,6 +1,6 @@
 <?php
-
 if (class_exists('VersionedImageExtension')) {
+
     class FrontEndVersionedImageExtension extends VersionedImageExtension
     {
 
@@ -26,15 +26,15 @@ if (class_exists('VersionedImageExtension')) {
         {
             $isEditable = FrontendEditing::editingEnabled() && FrontendEditing::isEditable($this);
             $value      = parent::forTemplate();
-            echo '<pre class="debug"> "$this"' . PHP_EOL . print_r($this, true) . PHP_EOL . '</pre>';
+            echo '<pre class="debug"> "$this"'.PHP_EOL.print_r($this, true).PHP_EOL.'</pre>';
             if ($isEditable) {
                 $field = $this->scaffoldSearchField($value)->
-                        setAttribute('data-feclass', FrontendEditing::getClassName($this))->
-                        setAttribute('data-feid', FrontendEditing::getID($this))->
-                        setAttribute('data-fefield', $this->name)->
-                        setHasEmptyDefault(false)->
-                        addExtraClass("frontend-editable frontend-editable-boolean")->
-                        setValue($value);
+                    setAttribute('data-feclass', FrontendEditing::getClassName($this))->
+                    setAttribute('data-feid', FrontendEditing::getID($this))->
+                    setAttribute('data-fefield', $this->name)->
+                    setHasEmptyDefault(false)->
+                    addExtraClass("frontend-editable frontend-editable-boolean")->
+                    setValue($value);
                 $value = $field->forTemplate();
             }
             return $value;

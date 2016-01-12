@@ -5,17 +5,6 @@
  */
 class FrontendEditingControllerExtension extends Extension
 {
-    protected $forceHide = false;
-
-    public function getHideAdmin()
-    {
-        return $this->forceHide;
-    }
-
-    public function setHideAdmin($forceHide)
-    {
-        $this->forceHide = $forceHide;
-    }
     private static $allowed_actions = array(
         'fesave', 'feFileUploadForm'
     );

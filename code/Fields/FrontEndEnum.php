@@ -32,10 +32,10 @@ class FrontEndEnum extends Enum
         $value      = parent::forTemplate();
         if ($isEditable) {
             $field = $this->formField(null, null, false, $value)->
-                    setAttribute('data-feclass', FrontendEditing::getClassName($this))->
-                    setAttribute('data-feid', FrontendEditing::getID($this))->
-                    setAttribute('data-fefield', $this->name)->
-                    addExtraClass("frontend-editable frontend-editable-enum");
+                setAttribute('data-feclass', FrontendEditing::getClassName($this))->
+                setAttribute('data-feid', FrontendEditing::getID($this))->
+                setAttribute('data-fefield', $this->name)->
+                addExtraClass("frontend-editable frontend-editable-enum");
             $value = $field->forTemplate();
         }
         return $value;

@@ -118,8 +118,7 @@ class FrontendEditing
     public static function ShowAdmin()
     {
         $result = false;
-
-        if (Controller::has_curr() && !Controller::curr()->getHideAdmin()) {
+        if (Controller::has_curr()) {
             $controller = Controller::curr();
             /* @var $page Page */
             $page       = $controller->data();

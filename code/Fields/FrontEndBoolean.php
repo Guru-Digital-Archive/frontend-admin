@@ -32,12 +32,12 @@ class FrontEndBoolean extends Boolean
         $value      = parent::forTemplate();
         if ($isEditable) {
             $field = $this->scaffoldSearchField($value)->
-                    setAttribute('data-feclass', FrontendEditing::getClassName($this))->
-                    setAttribute('data-feid', FrontendEditing::getID($this))->
-                    setAttribute('data-fefield', $this->name)->
-                    setHasEmptyDefault(false)->
-                    addExtraClass("frontend-editable frontend-editable-boolean")->
-                    setValue($value);
+                setAttribute('data-feclass', FrontendEditing::getClassName($this))->
+                setAttribute('data-feid', FrontendEditing::getID($this))->
+                setAttribute('data-fefield', $this->name)->
+                setHasEmptyDefault(false)->
+                addExtraClass("frontend-editable frontend-editable-boolean")->
+                setValue($value);
             $value = $field->forTemplate();
         }
         return $value;

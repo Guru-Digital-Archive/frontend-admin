@@ -1,6 +1,6 @@
 <?php
-
 if (class_exists("DynamicCacheExtension")) {
+
     class FrontEndAdminDynamicCacheExtension extends DynamicCacheExtension
     {
 

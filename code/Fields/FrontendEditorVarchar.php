@@ -29,7 +29,7 @@ class FrontendEditorVarchar extends Varchar
     {
         $value = parent::forTemplate();
         if (FrontendEditing::editingEnabled() && FrontendEditing::isEditable($this)) {
-            $value = '<span class="frontend-editable frontend-editable-varchar" data-feclass="' . FrontendEditing::getClassName($this) . '" data-feid="' . FrontendEditing::getID($this) . '" data-fefield="' . $this->name . '">' . $value . '</span>';
+            $value = '<span class="frontend-editable frontend-editable-varchar" data-feclass="'.FrontendEditing::getClassName($this).'" data-feid="'.FrontendEditing::getID($this).'" data-fefield="'.$this->name.'">'.$value.'</span>';
         }
         return $value;
     }

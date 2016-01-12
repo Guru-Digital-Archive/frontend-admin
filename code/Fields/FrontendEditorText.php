@@ -29,10 +29,10 @@ class FrontendEditorText extends Text
     {
         $value = parent::forTemplate();
         if (FrontendEditing::editingEnabled() && FrontendEditing::isEditable($this)
-                // If this is a link, its probably in a href, so dont wrap it
-                // Whish there was a way to tell if fields are being rendered in an HTML attribute
-                && $this->Name !== "Link") {
-            $value = '<span class="frontend-editable frontend-editable-text" data-feclass="' . FrontendEditing::getClassName($this) . '" data-feid="' . FrontendEditing::getID($this) . '" data-fefield="' . $this->name . '">' . $value . '</span>';
+            // If this is a link, its probably in a href, so dont wrap it
+            // Whish there was a way to tell if fields are being rendered in an HTML attribute
+            && $this->Name !== "Link") {
+            $value = '<span class="frontend-editable frontend-editable-text" data-feclass="'.FrontendEditing::getClassName($this).'" data-feid="'.FrontendEditing::getID($this).'" data-fefield="'.$this->name.'">'.$value.'</span>';
         }
         return $value;
     }

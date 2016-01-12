@@ -40,9 +40,9 @@ class FrontEndImageExtension extends DataExtension
         $dbField    = $this->owner->dbObject('Filename');
         FrontendEditing::setValue($dbField, $this->owner->Filename, $this->owner);
         $isEditable = FrontendEditing::editingEnabled() && FrontendEditing::isEditable($dbField);
-        $value      = $this->owner->forTemplate() . "99";
+        $value      = $this->owner->forTemplate()."99";
         if ($isEditable) {
-            $value = "<span class='editable'>" . $value . "</span>";
+            $value = "<span class='editable'>".$value."</span>";
         }
         return $value;
     }

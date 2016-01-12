@@ -34,7 +34,7 @@ class FrontendEditorHTMLText extends HTMLText
         $value = parent::forTemplate();
         if ($isEditable) {
             $randId = uniqid();
-            $value  = '<div id="' . $randId . '" contenteditable=true class="frontend-editable frontend-editable-html" data-feclass="' . FrontendEditing::getClassName($this) . '" data-feid="' . FrontendEditing::getID($this) . '" data-fefield="' . $this->name . '">' . $value . '</div>';
+            $value  = '<div id="'.$randId.'" contenteditable=true class="frontend-editable frontend-editable-html" data-feclass="'.FrontendEditing::getClassName($this).'" data-feid="'.FrontendEditing::getID($this).'" data-fefield="'.$this->name.'">'.$value.'</div>';
         }
         return $value;
     }
