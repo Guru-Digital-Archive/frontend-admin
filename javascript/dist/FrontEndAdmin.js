@@ -313,11 +313,20 @@
                                 // Get a refernce to the iframes jquery
                                 f$ = fWindow.jQuery;
 
-                        // Remove the preview mode selector as it doesnt make much sense in this context
-                        f$("#preview-mode-dropdown-in-content").entwine({
+                        // Remove the preview mode selector and the preview ifram
+                        f$("#preview-mode-dropdown-in-content, div.cms-preview.east").entwine({
                             onmatch: function () {
                                 this.remove();
                             }
+                        });
+
+                        //As there is no preview mode, always ensure we are in content mode
+                        f$.entwine('ss', function (f$) {
+                            f$('.cms-container').setLayoutOptions({
+                                minContentWidth: 940,
+                                minPreviewWidth: 400,
+                                mode: 'content'
+                            });
                         });
 
                         // Make the logout link affect the top most window
