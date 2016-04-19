@@ -15,7 +15,7 @@
         "issues": "https://github.com/gurudigital/frontend-admin/issues"
     },
     "require": {
-        "silverstripe/cms": "^3.0.1",
+        "silverstripe/cms": "3.0.1 - 3.99",
         "composer/installers": "*",
         "gdmedia/silverstripe-status-message": "dev-master"
     },
