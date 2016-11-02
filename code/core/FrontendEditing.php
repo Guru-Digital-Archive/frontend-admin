@@ -56,7 +56,7 @@ class FrontendEditing
 
     public static function editingEnabled()
     {
-        return FrontendEditing::$ForceEditable || ((Cookie::get('editmode') !== 'false') && !Controller::curr()->getRequest()->offsetExists('stage'));
+        return FrontendEditing::$ForceEditable || ((Cookie::get('editmode') && Cookie::get('editmode') !== 'false') && !Controller::curr()->getRequest()->offsetExists('stage'));
     }
 
     public static function enablingEditingFor($class)
