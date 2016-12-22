@@ -13,7 +13,7 @@ class FrontendEditing
      */
     public static function setValue(DBField $dbField, $value, $record = null)
     {
-        $canEdit = (Controller::curr() instanceof Page_Controller && Controller::curr()->data()->canEdit());
+        $canEdit = Controller::has_curr() && (Controller::curr() instanceof Page_Controller && Controller::curr()->data()->canEdit());
         if (!$canEdit) {
             $canEdit = is_object($record) && in_array(get_class($record), self::$EditableClasses) && method_exists($record, 'canEdit') && $record->canEdit();
         }
