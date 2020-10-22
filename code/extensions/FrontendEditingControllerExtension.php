@@ -32,7 +32,7 @@ class FrontendEditingControllerExtension extends Extension
 
         if ($canEdit) {
             // Enable front-end fly-out menu
-            // 
+            //
             //Flexslider imports easing, which breaks?
             Requirements::block('flexslider/javascript/jquery.easing.1.3.js');
 
@@ -148,7 +148,7 @@ class FrontendEditingControllerExtension extends Extension
     }
 }
 
-class FrontEndEditItem extends Object
+class FrontEndEditItem extends SS_Object
 {
     public $class;
     public $field;
